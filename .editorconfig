@@ -78,6 +78,9 @@ dotnet_diagnostic.CA1720.severity = warning
 # IDE0040: Add accessibility modifiers
 dotnet_diagnostic.IDE0040.severity = warning
 
+# IDE0005: Remove unnecessary using directives
+dotnet_diagnostic.IDE0005.severity = none
+
 # SA0001: XML comment analysis disabled
 dotnet_diagnostic.SA0001.severity = none
 
