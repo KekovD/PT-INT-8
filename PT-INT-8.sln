@@ -9,15 +9,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{68FB4F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1AC26A46-7ECB-4721-B25F-82991C81F772}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FibonacciInitiator", "FibonacciInitiator", "{A72CAB55-200D-41D5-B403-B8941FF0B2D3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FibonacciInitiator.Application", "src/FibonacciInitiator.Application/FibonacciInitiator.Application.csproj", "{9DF3FC0C-B2BF-46AF-9D85-38367965AFEA}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{D97DFC76-DEC7-4E64-87C8-CABDFB0DBF6B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FibonacciInitiator.Application.Models", "src/FibonacciInitiator.Application.Models/FibonacciInitiator.Application.Models.csproj", "{D353B7FF-76F8-49CE-B910-3C30B884EBC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FibonacciInitiator.Application", "FibonacciInitiator.Application\FibonacciInitiator.Application.csproj", "{9DF3FC0C-B2BF-46AF-9D85-38367965AFEA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FibonacciInitiator.Application.Contracts", "src/FibonacciInitiator.Application.Contracts/FibonacciInitiator.Application.Contracts.csproj", "{5A1F357A-FBB2-42EA-BA9B-0AE623CD4314}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FibonacciInitiator.Application.Models", "FibonacciInitiator.Application.Models\FibonacciInitiator.Application.Models.csproj", "{D353B7FF-76F8-49CE-B910-3C30B884EBC9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FibonacciInitiator.Application.Contracts", "FibonacciInitiator.Application.Contracts\FibonacciInitiator.Application.Contracts.csproj", "{5A1F357A-FBB2-42EA-BA9B-0AE623CD4314}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ports", "Ports", "{0C395542-6DEC-4F0D-BE8E-0FF633581404}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,10 +37,11 @@ Global
 		{5A1F357A-FBB2-42EA-BA9B-0AE623CD4314}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{9DF3FC0C-B2BF-46AF-9D85-38367965AFEA} = {1AC26A46-7ECB-4721-B25F-82991C81F772}
+		{D353B7FF-76F8-49CE-B910-3C30B884EBC9} = {1AC26A46-7ECB-4721-B25F-82991C81F772}
+		{5A1F357A-FBB2-42EA-BA9B-0AE623CD4314} = {1AC26A46-7ECB-4721-B25F-82991C81F772}
 		{A72CAB55-200D-41D5-B403-B8941FF0B2D3} = {1AC26A46-7ECB-4721-B25F-82991C81F772}
 		{D97DFC76-DEC7-4E64-87C8-CABDFB0DBF6B} = {A72CAB55-200D-41D5-B403-B8941FF0B2D3}
-		{9DF3FC0C-B2BF-46AF-9D85-38367965AFEA} = {D97DFC76-DEC7-4E64-87C8-CABDFB0DBF6B}
-		{D353B7FF-76F8-49CE-B910-3C30B884EBC9} = {D97DFC76-DEC7-4E64-87C8-CABDFB0DBF6B}
-		{5A1F357A-FBB2-42EA-BA9B-0AE623CD4314} = {D97DFC76-DEC7-4E64-87C8-CABDFB0DBF6B}
+		{0C395542-6DEC-4F0D-BE8E-0FF633581404} = {A72CAB55-200D-41D5-B403-B8941FF0B2D3}
 	EndGlobalSection
 EndGlobal
