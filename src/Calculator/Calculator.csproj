@@ -13,11 +13,11 @@
         <FrameworkReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
     <ItemGroup>
+      <ProjectReference Include="..\SharedModels\SharedModels.csproj" />
+    </ItemGroup>
+    <ItemGroup>
       <Content Include="..\..\.dockerignore">
         <Link>.dockerignore</Link>
       </Content>
-    </ItemGroup>
-    <ItemGroup>
-      <ProjectReference Include="..\SharedModels\SharedModels.csproj" />
     </ItemGroup>
 </Project>

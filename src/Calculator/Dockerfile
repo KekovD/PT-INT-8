@@ -8,6 +8,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/Calculator/Calculator.csproj", "src/Calculator/"]
+COPY ["src/SharedModels/SharedModels.csproj", "src/SharedModels/"]
 RUN dotnet restore "src/Calculator/Calculator.csproj"
 COPY . .
 WORKDIR "/src/src/Calculator"

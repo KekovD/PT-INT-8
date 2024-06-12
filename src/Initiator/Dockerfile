@@ -8,6 +8,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/Initiator/Initiator.csproj", "src/Initiator/"]
+COPY ["src/SharedModels/SharedModels.csproj", "src/SharedModels/"]
 RUN dotnet restore "src/Initiator/Initiator.csproj"
 COPY . .
 WORKDIR "/src/src/Initiator"
