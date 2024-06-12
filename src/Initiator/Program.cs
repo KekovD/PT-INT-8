@@ -27,7 +27,16 @@ public class Program
                     RabbitHutch.CreateBus(Environment.GetEnvironmentVariable("RabbitMQ__ConnectionString")));
                 
                 services.AddSingleton<IFibonacciService, FibonacciService>();
-                services.AddSingleton<IMessageQueueService, MessageQueueService>();
+                
+                services.AddSingleton<IMessageQueueService>(provider =>
+                    new MessageQueueService(
+                        bus: provider.GetRequiredService<IBus>(),
+                        httpClientService: provider.GetRequiredService<IHttpClientService>(),
+                        queueName: "Initiator_queue",
+                        messageTtl: 8,
+                        subscribeRetryCount: 5
+                    ));
+
                 services.AddSingleton<IHttpClientService, HttpClientService>();
                 services.AddSingleton<FibonacciController>();
                 services.AddHostedService(provider => new InitialCalculationService(provider, numberOfLaunches));

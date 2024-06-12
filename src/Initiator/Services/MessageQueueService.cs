@@ -10,27 +10,37 @@ public class MessageQueueService : IMessageQueueService
 {
     private readonly IBus _bus;
     private readonly IHttpClientService _httpClientService;
+    private readonly string _queueName;
+    private readonly int _messageTtl;
+    private readonly int _subscribeRetryCount;
 
-    public MessageQueueService(IBus bus, IHttpClientService httpClientService)
+    public MessageQueueService(
+        IBus bus,
+        IHttpClientService httpClientService,
+        string queueName,
+        int messageTtl,
+        int subscribeRetryCount
+        )
     {
         _bus = bus;
         _httpClientService = httpClientService;
+        _queueName = queueName;
+        _messageTtl = messageTtl;
+        _subscribeRetryCount = subscribeRetryCount;
     }
 
     public async Task DeclareAndSubscribeToQueueWithTtlAsync()
     {
-        const string queueName = "Initiator_queue";
-        const int messageTtl = 10;
+        _bus.Advanced.QueueDeclare(_queueName, c => c
+            .WithMessageTtl(TimeSpan.FromSeconds(_messageTtl)));
 
-        _bus.Advanced.QueueDeclare(queueName, c => c
-            .WithMessageTtl(TimeSpan.FromSeconds(messageTtl)));
-
-        await SubscribeToMessages(queueName).ConfigureAwait(false);
+        await SubscribeToMessages(_queueName).ConfigureAwait(false);
     }
 
-    private async Task SubscribeToMessages(string queueName, int retryCount = 5)
+
+    private async Task SubscribeToMessages(string queueName)
     {
-        for (int i = 0; i < retryCount; i++)
+        for (int i = 0; i < _subscribeRetryCount; i++)
         {
             try
             {
@@ -48,11 +58,11 @@ public class MessageQueueService : IMessageQueueService
             }
             catch (TaskCanceledException)
             {
-                Console.WriteLine($"Failed to subscribe to messages. Retry attempt {i + 1}/{retryCount}...");
+                Console.WriteLine($"Failed to subscribe to messages. Retry attempt {i + 1}/{_subscribeRetryCount}...");
                 await Task.Delay(1000).ConfigureAwait(false);
             }
         }
 
-        Console.WriteLine($"Failed to subscribe to messages after {retryCount} attempts.");
+        Console.WriteLine($"Failed to subscribe to messages after {_subscribeRetryCount} attempts.");
     }
 }
