@@ -1,5 +1,3 @@
-﻿using System.Numerics;
+﻿namespace SharedModels;
 
-namespace SharedModels;
-
-public record FibonacciState(long Previous, long Current);
+public record FibonacciState(string Previous, string Current);

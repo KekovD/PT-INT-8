@@ -13,7 +13,7 @@ public class InitialCalculationService(IServiceProvider serviceProvider) : IHost
     {
         using IServiceScope scope = serviceProvider.CreateScope();
         FibonacciController controller = scope.ServiceProvider.GetRequiredService<FibonacciController>();
-        await controller.StartCalculations(10);
+        await controller.StartCalculations(2);
     }
 
     public Task StopAsync(CancellationToken cancellationToken)

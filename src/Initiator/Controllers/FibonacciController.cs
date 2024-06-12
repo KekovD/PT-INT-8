@@ -27,8 +27,8 @@ public class FibonacciController : ControllerBase
     {
         await SubscribeToMessages();
         
-        long previous = 0;
-        long current = 1;
+        string previous = "0";
+        string current = "1";
         var tasks = new List<Task>();
 
         for (int i = 0; i < count; i++)
