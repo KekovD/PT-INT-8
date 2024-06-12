@@ -1,3 +1,4 @@
+using System;
 using System.Numerics;
 using System.Threading.Tasks;
 using EasyNetQ;
@@ -13,7 +14,7 @@ public class CalculatorController(IBus bus) : ControllerBase
     public async Task CalculateNext(FibonacciState state)
     {
         BigInteger newCurrent = BigInteger.Add(BigInteger.Parse(state.Previous), BigInteger.Parse(state.Current));
-        var newState = new FibonacciState(state.Current, newCurrent.ToString(), state.StartId);
+        var newState = new FibonacciState(state.Current, newCurrent.ToString(), state.StartId, DateTime.Now);
 
         await bus.PubSub.PublishAsync(newState).ConfigureAwait(false);
     }

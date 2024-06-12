@@ -33,7 +33,7 @@ public class FibonacciController : ControllerBase
 
         for (int i = 0; i < count; i++)
         {
-            var state = new FibonacciState(previous, current, StartId: i);
+            var state = new FibonacciState(previous, current, StartId: i, DateTime.Now);
             tasks.Add(SendStateToCalculator(state));
         }
 
@@ -58,7 +58,15 @@ public class FibonacciController : ControllerBase
             try
             {
                 await _bus.PubSub.SubscribeAsync<FibonacciState>(queueName,
-                    async state => { await SendStateToCalculator(state).ConfigureAwait(false); });
+                    async state =>
+                    {
+                        var difference = DateTime.Now - state.SendTime;
+                        int maxDifference = 8;
+                        
+                        if (difference.TotalSeconds > maxDifference) return;
+                        
+                        await SendStateToCalculator(state).ConfigureAwait(false);
+                    });
                 return;
             }
             catch (TaskCanceledException)
