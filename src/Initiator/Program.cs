@@ -60,7 +60,7 @@ namespace Initiator;
                                     logStrategy: provider.GetRequiredService<ILogStrategy>()
                                 ));
 
-                            services.AddSingleton<FibonacciController>();
+                            services.AddSingleton<InitiatorController>();
                             services.AddHostedService(provider => new InitialCalculationService(provider, numberOfLaunches));
                         })
                         .Configure(app =>

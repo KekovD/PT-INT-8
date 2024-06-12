@@ -6,11 +6,11 @@ namespace Initiator.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class FibonacciController : ControllerBase
+public class InitiatorController : ControllerBase
 {
     private readonly IFibonacciService _fibonacciService;
 
-    public FibonacciController(IFibonacciService fibonacciService)
+    public InitiatorController(IFibonacciService fibonacciService)
     {
         _fibonacciService = fibonacciService;
     }

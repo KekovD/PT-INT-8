@@ -21,7 +21,7 @@ public class InitialCalculationService : IHostedService
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         using var scope = _serviceProvider.CreateScope();
-        var controller = scope.ServiceProvider.GetRequiredService<FibonacciController>();
+        var controller = scope.ServiceProvider.GetRequiredService<InitiatorController>();
         await controller.StartCalculations(_numberOfLaunches).ConfigureAwait(false);
     }
 
