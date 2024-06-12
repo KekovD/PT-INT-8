@@ -15,7 +15,7 @@ public class Program
 {
     public static async Task Main(string[] args)
     {
-        int numberOfLaunches = 3;
+        int numberOfLaunches = 5;
         
         IWebHost host = new WebHostBuilder()
             .UseKestrel()

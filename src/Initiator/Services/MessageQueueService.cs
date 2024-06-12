@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using System.Threading.Tasks;
 using EasyNetQ;
 using Initiator.Services.Interfaces;
@@ -43,6 +44,9 @@ public class MessageQueueService : IMessageQueueService
 
     private async Task SubscribeToMessages(string queueName)
     {
+        var logBuilder = new StringBuilder();
+        const int retryDelayMilliseconds = 1000;
+        
         for (int i = 0; i < _subscribeRetryCount; i++)
         {
             try
@@ -61,11 +65,26 @@ public class MessageQueueService : IMessageQueueService
             }
             catch (TaskCanceledException)
             {
-                _logStrategy.Log($"Failed to subscribe to messages. Retry attempt {i + 1}/{_subscribeRetryCount}...");
-                await Task.Delay(1000).ConfigureAwait(false);
+                logBuilder.Clear();
+                
+                logBuilder.Append("Failed to subscribe to messages. Retry attempt ")
+                    .Append(i + 1)
+                    .Append('/')
+                    .Append(_subscribeRetryCount)
+                    .Append("...");
+                
+                _logStrategy.Log(logBuilder.ToString());
+                
+                await Task.Delay(retryDelayMilliseconds).ConfigureAwait(false);
             }
         }
 
-        _logStrategy.Log($"Failed to subscribe to messages after {_subscribeRetryCount} attempts.");
+        logBuilder.Clear();
+        
+        logBuilder.Append("Failed to subscribe to messages after ")
+            .Append(_subscribeRetryCount)
+            .Append(" attempts.");
+        
+        _logStrategy.Log(logBuilder.ToString());
     }
 }

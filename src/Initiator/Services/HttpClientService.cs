@@ -1,6 +1,6 @@
-using System;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text;
 using System.Threading.Tasks;
 using Initiator.Services.Interfaces;
 using SharedModels;
@@ -24,8 +24,16 @@ public class HttpClientService : IHttpClientService
     {
         HttpClient client = _httpClientFactory.CreateClient();
 
-        _logStrategy.Log(
-            $"Received Fibonacci state: Previous={state.Previous}, Current={state.Current}, StartId={state.StartId}");
+        var logBuilder = new StringBuilder();
+        
+        logBuilder.Append("Received Fibonacci state: Previous=")
+            .Append(state.Previous)
+            .Append(", Current=")
+            .Append(state.Current)
+            .Append(", StartId=")
+            .Append(state.StartId);
+
+        _logStrategy.Log(logBuilder.ToString());
 
         await client.PostAsJsonAsync(_calculatorUrl, state).ConfigureAwait(false);
     }
