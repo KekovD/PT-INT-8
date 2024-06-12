@@ -25,15 +25,15 @@ public class FibonacciController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> StartCalculations([FromQuery] int count)
     {
-        await SubscribeToMessages();
-        
+        await DeclareAndSubscribeToQueueWithTtl();
+
         string previous = "0";
         string current = "1";
         var tasks = new List<Task>();
 
         for (int i = 0; i < count; i++)
         {
-            var state = new FibonacciState(previous, current);
+            var state = new FibonacciState(previous, current, StartId: i);
             tasks.Add(SendStateToCalculator(state));
         }
 
@@ -44,20 +44,21 @@ public class FibonacciController : ControllerBase
     private async Task SendStateToCalculator(FibonacciState state)
     {
         HttpClient client = _httpClientFactory.CreateClient();
-        Console.WriteLine($"Received Fibonacci state: Previous={state.Previous}, Current={state.Current}");
+        
+        Console.WriteLine(
+            $"Received Fibonacci state: Previous={state.Previous}, Current={state.Current}, StartId={state.StartId}");
+        
         await client.PostAsJsonAsync("http://calculator:8080/calculator/receive", state).ConfigureAwait(false);
     }
-    
-    private async Task SubscribeToMessages(int retryCount = 5)
+
+    private async Task SubscribeToMessages(string queueName, int retryCount = 5)
     {
         for (int i = 0; i < retryCount; i++)
         {
             try
             {
-                await _bus.PubSub.SubscribeAsync<FibonacciState>("Initiator_queue", async state =>
-                {
-                    await SendStateToCalculator(state).ConfigureAwait(false);
-                });
+                await _bus.PubSub.SubscribeAsync<FibonacciState>(queueName,
+                    async state => { await SendStateToCalculator(state).ConfigureAwait(false); });
                 return;
             }
             catch (TaskCanceledException)
@@ -68,5 +69,16 @@ public class FibonacciController : ControllerBase
         }
 
         Console.WriteLine($"Failed to subscribe to messages after {retryCount} attempts.");
+    }
+
+    private async Task DeclareAndSubscribeToQueueWithTtl()
+    {
+        const string queueName = "Initiator_queue";
+        const int messageTtl = 10;
+
+        _bus.Advanced.QueueDeclare(queueName, c => c
+            .WithMessageTtl(TimeSpan.FromSeconds(messageTtl)));
+
+        await SubscribeToMessages(queueName);
     }
 }

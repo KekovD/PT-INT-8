@@ -16,8 +16,10 @@ public class Program
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddControllers();
+        
         builder.Services.AddSingleton<IBus>(provider =>
             RabbitHutch.CreateBus(Environment.GetEnvironmentVariable("RabbitMQ__ConnectionString")));
+        
         builder.Services.AddTransient<CalculatorController>();
         
         WebApplication app = builder.Build();

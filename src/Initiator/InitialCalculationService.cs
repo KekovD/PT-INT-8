@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using EasyNetQ;
 using Initiator.Controllers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -11,8 +12,8 @@ public class InitialCalculationService(IServiceProvider serviceProvider) : IHost
 {
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        using IServiceScope scope = serviceProvider.CreateScope();
-        FibonacciController controller = scope.ServiceProvider.GetRequiredService<FibonacciController>();
+        using var scope = serviceProvider.CreateScope();
+        var controller = scope.ServiceProvider.GetRequiredService<FibonacciController>();
         await controller.StartCalculations(2);
     }
 

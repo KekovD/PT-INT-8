@@ -13,7 +13,7 @@ public class CalculatorController(IBus bus) : ControllerBase
     public async Task CalculateNext(FibonacciState state)
     {
         BigInteger newCurrent = BigInteger.Add(BigInteger.Parse(state.Previous), BigInteger.Parse(state.Current));
-        var newState = new FibonacciState(state.Current, newCurrent.ToString());
+        var newState = new FibonacciState(state.Current, newCurrent.ToString(), state.StartId);
 
         await bus.PubSub.PublishAsync(newState).ConfigureAwait(false);
     }
