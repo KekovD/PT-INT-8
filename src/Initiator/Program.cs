@@ -2,6 +2,8 @@ using System;
 using System.Threading.Tasks;
 using EasyNetQ;
 using Initiator.Controllers;
+using Initiator.Services;
+using Initiator.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +22,9 @@ public class Program
                 services.AddHttpClient();
                 services.AddSingleton<IBus>(provider =>
                     RabbitHutch.CreateBus(Environment.GetEnvironmentVariable("RabbitMQ__ConnectionString")));
+                services.AddSingleton<IFibonacciService, FibonacciService>();
+                services.AddSingleton<IMessageQueueService, MessageQueueService>();
+                services.AddSingleton<IHttpClientService, HttpClientService>();
                 services.AddSingleton<FibonacciController>();
                 services.AddHostedService<InitialCalculationService>();
             })

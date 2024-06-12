@@ -1,92 +1,23 @@
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
-using EasyNetQ;
+using Initiator.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using SharedModels;
-
 namespace Initiator.Controllers;
 
 [ApiController]
 [Route("[controller]")]
 public class FibonacciController : ControllerBase
 {
-    private readonly IHttpClientFactory _httpClientFactory;
-    private readonly IBus _bus;
+    private readonly IFibonacciService _fibonacciService;
 
-    public FibonacciController(IHttpClientFactory httpClientFactory, IBus bus)
+    public FibonacciController(IFibonacciService fibonacciService)
     {
-        _httpClientFactory = httpClientFactory;
-        _bus = bus;
+        _fibonacciService = fibonacciService;
     }
 
     [HttpPost]
     public async Task<IActionResult> StartCalculations([FromQuery] int count)
     {
-        await DeclareAndSubscribeToQueueWithTtl();
-
-        string previous = "0";
-        string current = "1";
-        var tasks = new List<Task>();
-
-        for (int i = 0; i < count; i++)
-        {
-            var state = new FibonacciState(previous, current, StartId: i, DateTime.Now);
-            tasks.Add(SendStateToCalculator(state));
-        }
-
-        await Task.WhenAll(tasks).ConfigureAwait(false);
+        await _fibonacciService.StartCalculationsAsync(count);
         return Ok("Calculations started");
-    }
-
-    private async Task SendStateToCalculator(FibonacciState state)
-    {
-        HttpClient client = _httpClientFactory.CreateClient();
-        
-        Console.WriteLine(
-            $"Received Fibonacci state: Previous={state.Previous}, Current={state.Current}, StartId={state.StartId}");
-        
-        await client.PostAsJsonAsync("http://calculator:8080/calculator/receive", state).ConfigureAwait(false);
-    }
-
-    private async Task SubscribeToMessages(string queueName, int retryCount = 5)
-    {
-        for (int i = 0; i < retryCount; i++)
-        {
-            try
-            {
-                await _bus.PubSub.SubscribeAsync<FibonacciState>(queueName,
-                    async state =>
-                    {
-                        var difference = DateTime.Now - state.SendTime;
-                        int maxDifference = 8;
-                        
-                        if (difference.TotalSeconds > maxDifference) return;
-                        
-                        await SendStateToCalculator(state).ConfigureAwait(false);
-                    });
-                return;
-            }
-            catch (TaskCanceledException)
-            {
-                Console.WriteLine($"Failed to subscribe to messages. Retry attempt {i + 1}/{retryCount}...");
-                await Task.Delay(1000).ConfigureAwait(false);
-            }
-        }
-
-        Console.WriteLine($"Failed to subscribe to messages after {retryCount} attempts.");
-    }
-
-    private async Task DeclareAndSubscribeToQueueWithTtl()
-    {
-        const string queueName = "Initiator_queue";
-        const int messageTtl = 10;
-
-        _bus.Advanced.QueueDeclare(queueName, c => c
-            .WithMessageTtl(TimeSpan.FromSeconds(messageTtl)));
-
-        await SubscribeToMessages(queueName);
     }
 }
