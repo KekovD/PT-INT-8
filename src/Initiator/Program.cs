@@ -14,19 +14,23 @@ public class Program
 {
     public static async Task Main(string[] args)
     {
+        int numberOfLaunches = 3;
+        
         IWebHost host = new WebHostBuilder()
             .UseKestrel()
             .ConfigureServices((context, services) =>
             {
                 services.AddControllers();
                 services.AddHttpClient();
+                
                 services.AddSingleton<IBus>(provider =>
                     RabbitHutch.CreateBus(Environment.GetEnvironmentVariable("RabbitMQ__ConnectionString")));
+                
                 services.AddSingleton<IFibonacciService, FibonacciService>();
                 services.AddSingleton<IMessageQueueService, MessageQueueService>();
                 services.AddSingleton<IHttpClientService, HttpClientService>();
                 services.AddSingleton<FibonacciController>();
-                services.AddHostedService<InitialCalculationService>();
+                services.AddHostedService(provider => new InitialCalculationService(provider, numberOfLaunches));
             })
             .Configure(app =>
             {

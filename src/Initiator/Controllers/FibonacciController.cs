@@ -15,9 +15,9 @@ public class FibonacciController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> StartCalculations([FromQuery] int count)
+    public async Task<IActionResult> StartCalculations([FromQuery] int numberOfLaunches)
     {
-        await _fibonacciService.StartCalculationsAsync(count);
+        await _fibonacciService.StartCalculationsAsync(numberOfLaunches);
         return Ok("Calculations started");
     }
 }
