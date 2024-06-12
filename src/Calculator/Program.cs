@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Calculator.Controllers;
+using Calculator.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -21,6 +22,7 @@ public class Program
             RabbitHutch.CreateBus(Environment.GetEnvironmentVariable("RabbitMQ__ConnectionString")));
         
         builder.Services.AddTransient<CalculatorController>();
+        builder.Services.AddTransient<ICalculateNextService, CalculateNextService>();
         
         WebApplication app = builder.Build();
 
