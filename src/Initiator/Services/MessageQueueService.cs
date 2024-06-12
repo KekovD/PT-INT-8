@@ -64,9 +64,11 @@ public class MessageQueueService : IMessageQueueService
             catch (TaskCanceledException)
             {
                 logBuilder.Clear();
+
+                int retryNumber = i + 1;
                 
                 logBuilder.Append("Failed to subscribe to messages. Retry attempt ")
-                    .Append(i + 1)
+                    .Append(retryNumber)
                     .Append('/')
                     .Append(subscribeRetryCount)
                     .Append("...");

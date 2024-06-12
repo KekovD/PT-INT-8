@@ -21,8 +21,8 @@ public class FibonacciService : IFibonacciService
     {
         await _messageQueueService.DeclareAndSubscribeToQueueWithTtlAsync();
 
-        string previous = "0";
-        string current = "1";
+        const string previous = "0";
+        const string current = "1";
         var tasks = new List<Task>();
 
         for (int i = 0; i < count; i++)
