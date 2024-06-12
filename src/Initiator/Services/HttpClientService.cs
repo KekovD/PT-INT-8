@@ -10,19 +10,23 @@ namespace Initiator.Services;
 public class HttpClientService : IHttpClientService
 {
     private readonly IHttpClientFactory _httpClientFactory;
+    private readonly string _calculatorUrl;
+    private readonly ILogStrategy _logStrategy;
 
-    public HttpClientService(IHttpClientFactory httpClientFactory)
+    public HttpClientService(IHttpClientFactory httpClientFactory, string calculatorUrl, ILogStrategy logStrategy)
     {
         _httpClientFactory = httpClientFactory;
+        _calculatorUrl = calculatorUrl;
+        _logStrategy = logStrategy;
     }
 
     public async Task SendStateToCalculatorAsync(FibonacciState state)
     {
         HttpClient client = _httpClientFactory.CreateClient();
-        
-        Console.WriteLine(
+
+        _logStrategy.Log(
             $"Received Fibonacci state: Previous={state.Previous}, Current={state.Current}, StartId={state.StartId}");
-        
-        await client.PostAsJsonAsync("http://calculator:8080/calculator/receive", state).ConfigureAwait(false);
+
+        await client.PostAsJsonAsync(_calculatorUrl, state).ConfigureAwait(false);
     }
 }

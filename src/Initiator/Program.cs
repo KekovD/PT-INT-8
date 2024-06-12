@@ -1,4 +1,5 @@
 using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using EasyNetQ;
 using Initiator.Controllers;
@@ -25,7 +26,8 @@ public class Program
                 
                 services.AddSingleton<IBus>(provider =>
                     RabbitHutch.CreateBus(Environment.GetEnvironmentVariable("RabbitMQ__ConnectionString")));
-                
+
+                services.AddSingleton<ILogStrategy, ConsoleLogStrategy>();
                 services.AddSingleton<IFibonacciService, FibonacciService>();
                 
                 services.AddSingleton<IMessageQueueService>(provider =>
@@ -34,10 +36,17 @@ public class Program
                         httpClientService: provider.GetRequiredService<IHttpClientService>(),
                         queueName: "Initiator_queue",
                         messageTtl: 8,
-                        subscribeRetryCount: 5
+                        subscribeRetryCount: 5,
+                        logStrategy: provider.GetRequiredService<ILogStrategy>()
                     ));
 
-                services.AddSingleton<IHttpClientService, HttpClientService>();
+                services.AddSingleton<IHttpClientService>(provider =>
+                    new HttpClientService(
+                        httpClientFactory: provider.GetRequiredService<IHttpClientFactory>(),
+                        calculatorUrl: "http://calculator:8080/calculator/receive",
+                        logStrategy: provider.GetRequiredService<ILogStrategy>()
+                    ));
+                
                 services.AddSingleton<FibonacciController>();
                 services.AddHostedService(provider => new InitialCalculationService(provider, numberOfLaunches));
             })

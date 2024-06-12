@@ -13,13 +13,15 @@ public class MessageQueueService : IMessageQueueService
     private readonly string _queueName;
     private readonly int _messageTtl;
     private readonly int _subscribeRetryCount;
+    private readonly ILogStrategy _logStrategy;
 
     public MessageQueueService(
         IBus bus,
         IHttpClientService httpClientService,
         string queueName,
         int messageTtl,
-        int subscribeRetryCount
+        int subscribeRetryCount,
+        ILogStrategy logStrategy
         )
     {
         _bus = bus;
@@ -27,6 +29,7 @@ public class MessageQueueService : IMessageQueueService
         _queueName = queueName;
         _messageTtl = messageTtl;
         _subscribeRetryCount = subscribeRetryCount;
+        _logStrategy = logStrategy;
     }
 
     public async Task DeclareAndSubscribeToQueueWithTtlAsync()
@@ -58,11 +61,11 @@ public class MessageQueueService : IMessageQueueService
             }
             catch (TaskCanceledException)
             {
-                Console.WriteLine($"Failed to subscribe to messages. Retry attempt {i + 1}/{_subscribeRetryCount}...");
+                _logStrategy.Log($"Failed to subscribe to messages. Retry attempt {i + 1}/{_subscribeRetryCount}...");
                 await Task.Delay(1000).ConfigureAwait(false);
             }
         }
 
-        Console.WriteLine($"Failed to subscribe to messages after {_subscribeRetryCount} attempts.");
+        _logStrategy.Log($"Failed to subscribe to messages after {_subscribeRetryCount} attempts.");
     }
 }
