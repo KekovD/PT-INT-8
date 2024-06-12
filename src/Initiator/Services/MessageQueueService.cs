@@ -13,7 +13,6 @@ public class MessageQueueService : IMessageQueueService
     private readonly IHttpClientService _httpClientService;
     private readonly string _queueName;
     private readonly int _messageTtl;
-    private readonly int _subscribeRetryCount;
     private readonly ILogStrategy _logStrategy;
 
     public MessageQueueService(
@@ -21,7 +20,6 @@ public class MessageQueueService : IMessageQueueService
         IHttpClientService httpClientService,
         string queueName,
         int messageTtl,
-        int subscribeRetryCount,
         ILogStrategy logStrategy
         )
     {
@@ -29,7 +27,6 @@ public class MessageQueueService : IMessageQueueService
         _httpClientService = httpClientService;
         _queueName = queueName;
         _messageTtl = messageTtl;
-        _subscribeRetryCount = subscribeRetryCount;
         _logStrategy = logStrategy;
     }
 
@@ -46,8 +43,9 @@ public class MessageQueueService : IMessageQueueService
     {
         var logBuilder = new StringBuilder();
         const int retryDelayMilliseconds = 1000;
+        const int subscribeRetryCount = 5;
         
-        for (int i = 0; i < _subscribeRetryCount; i++)
+        for (int i = 0; i < subscribeRetryCount; i++)
         {
             try
             {
@@ -55,9 +53,9 @@ public class MessageQueueService : IMessageQueueService
                     async state =>
                     {
                         var difference = DateTime.Now - state.SendTime;
-                        const int maxDifference = 8;
+                        const int maxTimeDifference = 8;
                         
-                        if (difference.TotalSeconds > maxDifference) return;
+                        if (difference.TotalSeconds > maxTimeDifference) return;
                         
                         await _httpClientService.SendStateToCalculatorAsync(state).ConfigureAwait(false);
                     });
@@ -70,7 +68,7 @@ public class MessageQueueService : IMessageQueueService
                 logBuilder.Append("Failed to subscribe to messages. Retry attempt ")
                     .Append(i + 1)
                     .Append('/')
-                    .Append(_subscribeRetryCount)
+                    .Append(subscribeRetryCount)
                     .Append("...");
                 
                 _logStrategy.Log(logBuilder.ToString());
@@ -82,7 +80,7 @@ public class MessageQueueService : IMessageQueueService
         logBuilder.Clear();
         
         logBuilder.Append("Failed to subscribe to messages after ")
-            .Append(_subscribeRetryCount)
+            .Append(subscribeRetryCount)
             .Append(" attempts.");
         
         _logStrategy.Log(logBuilder.ToString());
