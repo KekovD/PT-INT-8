@@ -1,12 +1,11 @@
-using System;
-using System.Threading.Tasks;
 using Calculator.Controllers;
 using Calculator.Services;
+using EasyNetQ;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
-using EasyNetQ;
+using System;
+using System.Threading.Tasks;
 
 namespace Calculator;
 
@@ -38,6 +37,6 @@ public class Program
             endpoints.MapControllers();
         });
 
-        await app.RunAsync();
+        await app.RunAsync().ConfigureAwait(false);
     }
 }

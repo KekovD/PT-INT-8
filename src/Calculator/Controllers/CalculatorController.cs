@@ -1,10 +1,8 @@
-using System;
-using System.Numerics;
-using System.Threading.Tasks;
 using Calculator.Services;
 using EasyNetQ;
 using Microsoft.AspNetCore.Mvc;
 using SharedModels;
+using System.Threading.Tasks;
 
 namespace Calculator.Controllers;
 

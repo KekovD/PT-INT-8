@@ -1,9 +1,9 @@
-using System;
-using System.Text;
-using System.Threading.Tasks;
 using EasyNetQ;
 using Initiator.Services.Interfaces;
 using SharedModels;
+using System;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Initiator.Services;
 

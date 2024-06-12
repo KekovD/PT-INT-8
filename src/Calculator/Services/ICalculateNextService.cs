@@ -1,5 +1,5 @@
-using System.Threading.Tasks;
 using SharedModels;
+using System.Threading.Tasks;
 
 namespace Calculator.Services;
 

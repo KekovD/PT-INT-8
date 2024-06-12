@@ -1,8 +1,8 @@
+using EasyNetQ;
+using SharedModels;
 using System;
 using System.Numerics;
 using System.Threading.Tasks;
-using EasyNetQ;
-using SharedModels;
 
 namespace Calculator.Services;
 

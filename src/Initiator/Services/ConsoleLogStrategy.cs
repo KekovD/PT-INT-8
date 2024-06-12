@@ -1,5 +1,5 @@
-using System;
 using Initiator.Services.Interfaces;
+using System;
 
 namespace Initiator.Services;
 

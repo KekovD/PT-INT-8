@@ -1,6 +1,7 @@
-using System.Threading.Tasks;
 using Initiator.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+
 namespace Initiator.Controllers;
 
 [ApiController]
