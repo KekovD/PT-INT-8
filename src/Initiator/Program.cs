@@ -60,7 +60,8 @@ namespace Initiator;
                                     httpClientService: provider.GetRequiredService<IHttpClientService>(),
                                     messageQueueService: provider.GetRequiredService<IMessageQueueService>(),
                                     startPrevious: startPrevious,
-                                    startCurrent: startCurrent
+                                    startCurrent: startCurrent,
+                                    logStrategy: provider.GetRequiredService<ILogStrategy>()
                                 ));
 
                             services.AddTransient<ICalculateNextService>(provider =>

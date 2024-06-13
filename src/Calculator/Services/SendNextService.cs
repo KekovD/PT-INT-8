@@ -1,7 +1,5 @@
 using EasyNetQ;
 using SharedModels;
-using System;
-using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using Calculator.Services.Interfaces;
@@ -23,20 +21,29 @@ public class SendNextService : ISendNextService
 
     public async Task SendNextAsync(FibonacciState state)
     {
-        var newState = await _calculateNextService.CalculateNextAsync(state).ConfigureAwait(false);
-        
-        var logBuilder = new StringBuilder();
-        
-        logBuilder
-            .Append("Sent Fibonacci state: Previous=")
-            .Append(newState.Previous)
-            .Append(", Current=")
-            .Append(newState.Current)
-            .Append(", StartId=")
-            .Append(newState.StartId);
+        try
+        {
+            var newState = await _calculateNextService.CalculateNextAsync(state).ConfigureAwait(false);
 
-        await _logStrategy.LogAsync(logBuilder.ToString()).ConfigureAwait(false);
+            var logBuilder = new StringBuilder();
 
-        await _bus.PubSub.PublishAsync(newState).ConfigureAwait(false);
+            logBuilder
+                .Append("Sent Fibonacci state: Previous=")
+                .Append(newState.Previous)
+                .Append(", Current=")
+                .Append(newState.Current)
+                .Append(", StartId=")
+                .Append(newState.StartId);
+
+            await _logStrategy.LogAsync(logBuilder.ToString()).ConfigureAwait(false);
+
+            await _bus.PubSub.PublishAsync(newState).ConfigureAwait(false);
+        }
+        catch (EasyNetQException exception)
+        {
+            var errorMessage = $"Error publishing Fibonacci state: {exception.Message}";
+            await _logStrategy.LogAsync(errorMessage).ConfigureAwait(false);
+            throw new EasyNetQException(errorMessage, exception);
+        }
     }
 }

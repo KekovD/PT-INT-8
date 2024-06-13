@@ -29,22 +29,31 @@ public class HttpClientService : IHttpClientService
 
     public async Task SendStateToCalculatorAsync(FibonacciState state)
     {
-        HttpClient client = _httpClientFactory.CreateClient();
+        try
+        {
+            HttpClient client = _httpClientFactory.CreateClient();
 
-        state = await _calculateNextService.CalculateNextAsync(state).ConfigureAwait(false);
+            state = await _calculateNextService.CalculateNextAsync(state).ConfigureAwait(false);
 
-        var logBuilder = new StringBuilder();
-        
-        logBuilder
-            .Append("Sent Fibonacci state: Previous=")
-            .Append(state.Previous)
-            .Append(", Current=")
-            .Append(state.Current)
-            .Append(", StartId=")
-            .Append(state.StartId);
+            var logBuilder = new StringBuilder();
 
-        await _logStrategy.LogAsync(logBuilder.ToString()).ConfigureAwait(false);
+            logBuilder
+                .Append("Sent Fibonacci state: Previous=")
+                .Append(state.Previous)
+                .Append(", Current=")
+                .Append(state.Current)
+                .Append(", StartId=")
+                .Append(state.StartId);
 
-        await client.PostAsJsonAsync(_calculatorUrl, state).ConfigureAwait(false);
+            await _logStrategy.LogAsync(logBuilder.ToString()).ConfigureAwait(false);
+
+            await client.PostAsJsonAsync(_calculatorUrl, state).ConfigureAwait(false);
+        }
+        catch (HttpRequestException exception)
+        {
+            var errorMessage = $"HTTP request exception: {exception.Message}";
+            await _logStrategy.LogAsync(errorMessage).ConfigureAwait(false);
+            throw new HttpRequestException(errorMessage, exception);
+        }
     }
 }
