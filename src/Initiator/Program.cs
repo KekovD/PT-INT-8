@@ -20,10 +20,11 @@ namespace Initiator;
             var rabbitConnectionString = Environment.GetEnvironmentVariable("RabbitMQ__ConnectionString");
             var queueName = Environment.GetEnvironmentVariable("QUEUE_NAME");
             var calculatorUrl = Environment.GetEnvironmentVariable("CALCULATOR_URL");
-            var messageTtl = int.Parse(Environment.GetEnvironmentVariable("MESSAGE_TTL") ?? "8");
-            var numberOfLaunches = int.Parse(Environment.GetEnvironmentVariable("NUMBER_OF_LAUNCHES") ?? "5");
-            var startPrevious = Environment.GetEnvironmentVariable("START_PREVIOUS") ?? "0";
-            var startCurrent = Environment.GetEnvironmentVariable("START_CURRENT") ?? "1";
+        
+            int messageTtl = ParseEnvironmentVariable("MESSAGE_TTL", defaultValue: 8);
+            int numberOfLaunches = ParseEnvironmentVariable("NUMBER_OF_LAUNCHES", defaultValue: 5);
+            int startPrevious = ParseEnvironmentVariable("START_PREVIOUS", defaultValue: 0);
+            int startCurrent = ParseEnvironmentVariable("START_CURRENT", defaultValue: 1);
 
             if (rabbitConnectionString is null || queueName is null || calculatorUrl is null)
             {
@@ -66,8 +67,8 @@ namespace Initiator;
 
                             services.AddTransient<ICalculateNextService>(provider =>
                                 new CalculateNextService(
-                                    startPrevious: startPrevious,
-                                    startCurrent: startCurrent
+                                    startPrevious: startPrevious.ToString(),
+                                    startCurrent: startCurrent.ToString()
                                     ));
 
                             services.AddTransient<IHttpClientService>(provider =>
@@ -93,5 +94,17 @@ namespace Initiator;
                 .Build();
 
             await host.RunAsync().ConfigureAwait(false);
+        }
+        
+        private static int ParseEnvironmentVariable(string variableName, int defaultValue)
+        {
+            var value = Environment.GetEnvironmentVariable(variableName);
+            if (int.TryParse(value, out var result))
+            {
+                return result;
+            }
+            
+            Console.WriteLine($"{variableName} is not set or invalid. Using default value: {defaultValue}");
+            return defaultValue;
         }
     }

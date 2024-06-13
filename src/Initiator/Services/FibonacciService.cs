@@ -10,15 +10,17 @@ public class FibonacciService : IFibonacciService
 {
     private readonly IHttpClientService _httpClientService;
     private readonly IMessageQueueService _messageQueueService;
-    private readonly string _startPrevious;
-    private readonly string _startCurrent;
+    private readonly int _startPrevious;
+    private readonly int _startCurrent;
     private readonly ILogStrategy _logStrategy;
 
     public FibonacciService(
         IHttpClientService httpClientService,
         IMessageQueueService messageQueueService,
-        string startPrevious,
-        string startCurrent, ILogStrategy logStrategy)
+        int startPrevious,
+        int startCurrent,
+        ILogStrategy logStrategy
+        )
     {
         _httpClientService = httpClientService;
         _messageQueueService = messageQueueService;
@@ -42,7 +44,7 @@ public class FibonacciService : IFibonacciService
 
         for (int i = 0; i < numberOfLaunches; i++)
         {
-            var state = new FibonacciState(_startPrevious, _startCurrent, StartId: i, DateTime.Now);
+            var state = new FibonacciState(_startPrevious.ToString(), _startCurrent.ToString(), StartId: i, DateTime.Now);
             tasks.Add(_httpClientService.SendStateToCalculatorAsync(state));
         }
 

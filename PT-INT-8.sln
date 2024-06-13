@@ -2,7 +2,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{68FB4F4B-4757-4C75-A346-7BC426D440F9}"
 	ProjectSection(SolutionItems) = preProject
-		Initiator\ = Initiator\
 		docker-compose.yml = docker-compose.yml
 	EndProjectSection
 EndProject
