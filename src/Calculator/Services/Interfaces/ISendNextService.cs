@@ -5,5 +5,5 @@ namespace Calculator.Services.Interfaces;
 
 public interface ISendNextService
 {
-    Task SendNext(FibonacciState state);
+    Task SendNextAsync(FibonacciState state);
 }

@@ -1,6 +1,7 @@
 using SharedModels;
 using System;
 using System.Numerics;
+using System.Threading.Tasks;
 using Initiator.Services.Interfaces;
 
 namespace Initiator.Services;
@@ -16,18 +17,17 @@ public class CalculateNextService : ICalculateNextService
         _startCurrent = startCurrent;
     }
 
-    public FibonacciState CalculateNext(FibonacciState state)
+    public Task<FibonacciState> CalculateNextAsync(FibonacciState state)
     {
-        if (!state.Previous.Equals(_startPrevious, StringComparison.InvariantCulture) ||
-            !state.Current.Equals(_startCurrent, StringComparison.InvariantCulture))
-        {
-            var previous = BigInteger.Parse(state.Previous);
-            var current = BigInteger.Parse(state.Current);
-            var newCurrent = BigInteger.Add(previous, current);
+        if (state.Previous.Equals(_startPrevious, StringComparison.InvariantCulture) &&
+            state.Current.Equals(_startCurrent, StringComparison.InvariantCulture)) 
+            return Task.FromResult(state);
         
-            return new FibonacciState(state.Current, newCurrent.ToString(), state.StartId, DateTime.Now);
-        }
+        var previous = BigInteger.Parse(state.Previous);
+        var current = BigInteger.Parse(state.Current);
+        var newCurrent = BigInteger.Add(previous, current);
         
-        return state;
+        return Task.FromResult(
+            new FibonacciState(state.Current, newCurrent.ToString(), state.StartId, DateTime.Now));
     }
 }

@@ -67,7 +67,8 @@ public class MessageQueueService : IMessageQueueService
 
                 int retryNumber = i + 1;
                 
-                logBuilder.Append("Failed to subscribe to messages. Retry attempt ")
+                logBuilder
+                    .Append("Failed to subscribe to messages. Retry attempt ")
                     .Append(retryNumber)
                     .Append('/')
                     .Append(subscribeRetryCount)

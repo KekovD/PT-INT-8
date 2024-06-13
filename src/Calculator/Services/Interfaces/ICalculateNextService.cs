@@ -5,5 +5,5 @@ namespace Calculator.Services.Interfaces;
 
 public interface ICalculateNextService
 {
-    FibonacciState CalculateNext(FibonacciState state);
+    Task<FibonacciState> CalculateNextAsync(FibonacciState state);
 }

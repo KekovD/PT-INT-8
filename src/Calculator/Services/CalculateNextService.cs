@@ -8,12 +8,13 @@ namespace Calculator.Services;
 
 public class CalculateNextService : ICalculateNextService
 {
-    public FibonacciState CalculateNext(FibonacciState state)
+    public Task<FibonacciState> CalculateNextAsync(FibonacciState state)
     {
         var previous = BigInteger.Parse(state.Previous);
         var current = BigInteger.Parse(state.Current);
         var newCurrent = BigInteger.Add(previous, current);
-        
-        return new FibonacciState(state.Current, newCurrent.ToString(), state.StartId, DateTime.Now);
+
+        return Task.FromResult(
+            new FibonacciState(state.Current, newCurrent.ToString(), state.StartId, DateTime.Now));
     }
 }

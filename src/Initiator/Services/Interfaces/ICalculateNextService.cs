@@ -1,8 +1,9 @@
 using SharedModels;
+using System.Threading.Tasks;
 
 namespace Initiator.Services.Interfaces;
 
 public interface ICalculateNextService
 {
-    FibonacciState CalculateNext(FibonacciState state);
+    Task<FibonacciState> CalculateNextAsync(FibonacciState state);
 }

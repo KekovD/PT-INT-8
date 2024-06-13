@@ -16,7 +16,7 @@ public class InitiatorController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> StartCalculations([FromQuery] int numberOfLaunches)
+    public async Task<IActionResult> StartCalculationsAsync([FromQuery] int numberOfLaunches)
     {
         await _fibonacciService.StartCalculationsAsync(numberOfLaunches).ConfigureAwait(false);
         return Ok("Calculations started");

@@ -28,7 +28,7 @@ public class FibonacciService : IFibonacciService
 
     public async Task StartCalculationsAsync(int numberOfLaunches)
     {
-        await _messageQueueService.DeclareAndSubscribeToQueueWithTtlAsync();
+        await _messageQueueService.DeclareAndSubscribeToQueueWithTtlAsync().ConfigureAwait(false);
 
         var tasks = new List<Task>();
 

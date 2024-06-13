@@ -31,11 +31,12 @@ public class HttpClientService : IHttpClientService
     {
         HttpClient client = _httpClientFactory.CreateClient();
 
-        state = _calculateNextService.CalculateNext(state);
+        state = await _calculateNextService.CalculateNextAsync(state).ConfigureAwait(false);
 
         var logBuilder = new StringBuilder();
         
-        logBuilder.Append("Sent Fibonacci state: Previous=")
+        logBuilder
+            .Append("Sent Fibonacci state: Previous=")
             .Append(state.Previous)
             .Append(", Current=")
             .Append(state.Current)

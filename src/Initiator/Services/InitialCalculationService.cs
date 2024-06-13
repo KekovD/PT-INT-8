@@ -22,7 +22,7 @@ public class InitialCalculationService : IHostedService
     {
         using var scope = _serviceProvider.CreateScope();
         var controller = scope.ServiceProvider.GetRequiredService<InitiatorController>();
-        await controller.StartCalculations(_numberOfLaunches).ConfigureAwait(false);
+        await controller.StartCalculationsAsync(_numberOfLaunches).ConfigureAwait(false);
     }
 
     public Task StopAsync(CancellationToken cancellationToken)

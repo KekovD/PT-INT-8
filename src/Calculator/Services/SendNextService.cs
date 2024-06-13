@@ -21,20 +21,21 @@ public class SendNextService : ISendNextService
         _calculateNextService = calculateNextService;
     }
 
-    public async Task SendNext(FibonacciState state)
+    public async Task SendNextAsync(FibonacciState state)
     {
-        var newState = _calculateNextService.CalculateNext(state);
+        var newState = await _calculateNextService.CalculateNextAsync(state).ConfigureAwait(false);
         
         var logBuilder = new StringBuilder();
         
-        logBuilder.Append("Sent Fibonacci state: Previous=")
+        logBuilder
+            .Append("Sent Fibonacci state: Previous=")
             .Append(newState.Previous)
             .Append(", Current=")
             .Append(newState.Current)
             .Append(", StartId=")
             .Append(newState.StartId);
 
-        _logStrategy.LogAsync(logBuilder.ToString());
+        await _logStrategy.LogAsync(logBuilder.ToString()).ConfigureAwait(false);
 
         await _bus.PubSub.PublishAsync(newState).ConfigureAwait(false);
     }

@@ -18,9 +18,9 @@ public class CalculatorController : ControllerBase
     }
 
     [HttpPost("receive")]
-    public async Task<IActionResult> ReceiveMessage([FromBody] FibonacciState state)
+    public async Task<IActionResult> ReceiveMessageAsync([FromBody] FibonacciState state)
     {
-        await _sendNextService.SendNext(state).ConfigureAwait(false);
+        await _sendNextService.SendNextAsync(state).ConfigureAwait(false);
         return Ok();
     }
 }
