@@ -54,6 +54,7 @@ namespace Initiator;
                                 ));
                             
                             services.AddTransient<ILogStrategy, ConsoleLogStrategy>();
+                            
                             services.AddTransient<IFibonacciService>(provider =>
                                 new FibonacciService(
                                     httpClientService: provider.GetRequiredService<IHttpClientService>(),
@@ -62,13 +63,18 @@ namespace Initiator;
                                     startCurrent: startCurrent
                                 ));
 
+                            services.AddTransient<IFibonacciCalculatorService>(provider =>
+                                new FibonacciCalculatorService(
+                                    startPrevious: startPrevious,
+                                    startCurrent: startCurrent
+                                    ));
+
                             services.AddTransient<IHttpClientService>(provider =>
                                 new HttpClientService(
                                     httpClientFactory: provider.GetRequiredService<IHttpClientFactory>(),
                                     calculatorUrl: calculatorUrl,
                                     logStrategy: provider.GetRequiredService<ILogStrategy>(),
-                                    startPrevious: startPrevious,
-                                    startCurrent: startCurrent
+                                    fibonacciCalculatorService: provider.GetRequiredService<IFibonacciCalculatorService>()
                                 ));
 
                             services.AddSingleton<InitiatorController>();
