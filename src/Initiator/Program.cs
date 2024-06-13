@@ -18,10 +18,12 @@ namespace Initiator;
         public static async Task Main(string[] args)
         {
             var rabbitConnectionString = Environment.GetEnvironmentVariable("RabbitMQ__ConnectionString");
-            var numberOfLaunches = int.Parse(Environment.GetEnvironmentVariable("NUMBER_OF_LAUNCHES") ?? "5");
             var queueName = Environment.GetEnvironmentVariable("QUEUE_NAME");
             var calculatorUrl = Environment.GetEnvironmentVariable("CALCULATOR_URL");
             var messageTtl = int.Parse(Environment.GetEnvironmentVariable("MESSAGE_TTL") ?? "8");
+            var numberOfLaunches = int.Parse(Environment.GetEnvironmentVariable("NUMBER_OF_LAUNCHES") ?? "5");
+            var startPrevious = Environment.GetEnvironmentVariable("START_PREVIOUS") ?? "0";
+            var startCurrent = Environment.GetEnvironmentVariable("START_CURRENT") ?? "1";
 
             if (rabbitConnectionString is null || queueName is null || calculatorUrl is null)
             {
@@ -42,9 +44,6 @@ namespace Initiator;
                             services.AddSingleton<IBus>(provider =>
                                 RabbitHutch.CreateBus(rabbitConnectionString));
 
-                            services.AddTransient<ILogStrategy, ConsoleLogStrategy>();
-                            services.AddTransient<IFibonacciService, FibonacciService>();
-
                             services.AddTransient<IMessageQueueService>(provider =>
                                 new MessageQueueService(
                                     bus: provider.GetRequiredService<IBus>(),
@@ -53,12 +52,23 @@ namespace Initiator;
                                     messageTtl: messageTtl,
                                     logStrategy: provider.GetRequiredService<ILogStrategy>()
                                 ));
+                            
+                            services.AddTransient<ILogStrategy, ConsoleLogStrategy>();
+                            services.AddTransient<IFibonacciService>(provider =>
+                                new FibonacciService(
+                                    httpClientService: provider.GetRequiredService<IHttpClientService>(),
+                                    messageQueueService: provider.GetRequiredService<IMessageQueueService>(),
+                                    startPrevious: startPrevious,
+                                    startCurrent: startCurrent
+                                ));
 
                             services.AddTransient<IHttpClientService>(provider =>
                                 new HttpClientService(
                                     httpClientFactory: provider.GetRequiredService<IHttpClientFactory>(),
                                     calculatorUrl: calculatorUrl,
-                                    logStrategy: provider.GetRequiredService<ILogStrategy>()
+                                    logStrategy: provider.GetRequiredService<ILogStrategy>(),
+                                    startPrevious: startPrevious,
+                                    startCurrent: startCurrent
                                 ));
 
                             services.AddSingleton<InitiatorController>();

@@ -4,5 +4,5 @@ namespace Initiator.Services.Interfaces;
 
 public interface IFibonacciService
 {
-    Task StartCalculationsAsync(int count);
+    Task StartCalculationsAsync(int numberOfLaunches);
 }
