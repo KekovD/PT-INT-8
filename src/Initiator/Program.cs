@@ -71,12 +71,15 @@ namespace Initiator;
                                     startCurrent: startCurrent.ToString()
                                     ));
 
+                            services.AddTransient<IHttpOperations, HttpClientOperations>();
+
                             services.AddTransient<IHttpClientService>(provider =>
                                 new HttpClientService(
                                     httpClientFactory: provider.GetRequiredService<IHttpClientFactory>(),
                                     calculatorUrl: calculatorUrl,
                                     logStrategy: provider.GetRequiredService<ILogStrategy>(),
-                                    calculateNextService: provider.GetRequiredService<ICalculateNextService>()
+                                    calculateNextService: provider.GetRequiredService<ICalculateNextService>(),
+                                    httpOperations: provider.GetRequiredService<IHttpOperations>()
                                 ));
 
                             services.AddSingleton<InitiatorController>();

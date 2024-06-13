@@ -3,6 +3,7 @@ using SharedModels;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Initiator.Services;
@@ -13,18 +14,19 @@ public class HttpClientService : IHttpClientService
     private readonly string _calculatorUrl;
     private readonly ILogStrategy _logStrategy;
     private readonly ICalculateNextService _calculateNextService;
+    private readonly IHttpOperations _httpOperations;
         
     public HttpClientService(
         IHttpClientFactory httpClientFactory,
         string calculatorUrl,
         ILogStrategy logStrategy,
-        ICalculateNextService calculateNextService
-        )
+        ICalculateNextService calculateNextService, IHttpOperations httpOperations)
     {
         _httpClientFactory = httpClientFactory;
         _calculatorUrl = calculatorUrl;
         _logStrategy = logStrategy;
         _calculateNextService = calculateNextService;
+        _httpOperations = httpOperations;
     }
 
     public async Task SendStateToCalculatorAsync(FibonacciState state)
@@ -46,8 +48,8 @@ public class HttpClientService : IHttpClientService
                 .Append(state.StartId);
 
             await _logStrategy.LogAsync(logBuilder.ToString()).ConfigureAwait(false);
-
-            await client.PostAsJsonAsync(_calculatorUrl, state).ConfigureAwait(false);
+            
+            await _httpOperations.PostAsJsonAsync(_calculatorUrl, state, CancellationToken.None).ConfigureAwait(false);
         }
         catch (HttpRequestException exception)
         {
