@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Initiator.Services;
 
-public class FibonacciService : IFibonacciService
+public class FibonacciStartService : IFibonacciStartService
 {
     private readonly IHttpClientService _httpClientService;
     private readonly IMessageQueueService _messageQueueService;
@@ -14,7 +14,7 @@ public class FibonacciService : IFibonacciService
     private readonly int _startCurrent;
     private readonly ILogStrategy _logStrategy;
 
-    public FibonacciService(
+    public FibonacciStartService(
         IHttpClientService httpClientService,
         IMessageQueueService messageQueueService,
         int startPrevious,

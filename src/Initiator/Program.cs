@@ -56,8 +56,8 @@ namespace Initiator;
                             
                             services.AddTransient<ILogStrategy, ConsoleLogStrategy>();
                             
-                            services.AddTransient<IFibonacciService>(provider =>
-                                new FibonacciService(
+                            services.AddTransient<IFibonacciStartService>(provider =>
+                                new FibonacciStartService(
                                     httpClientService: provider.GetRequiredService<IHttpClientService>(),
                                     messageQueueService: provider.GetRequiredService<IMessageQueueService>(),
                                     startPrevious: startPrevious,

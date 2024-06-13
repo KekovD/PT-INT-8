@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 
 namespace Initiator.Services.Interfaces;
 
-public interface IFibonacciService
+public interface IFibonacciStartService
 {
     Task StartCalculationsAsync(int numberOfLaunches);
 }

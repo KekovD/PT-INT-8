@@ -8,17 +8,17 @@ namespace Initiator.Controllers;
 [Route("[controller]")]
 public class InitiatorController : ControllerBase
 {
-    private readonly IFibonacciService _fibonacciService;
+    private readonly IFibonacciStartService _fibonacciStartService;
 
-    public InitiatorController(IFibonacciService fibonacciService)
+    public InitiatorController(IFibonacciStartService fibonacciStartService)
     {
-        _fibonacciService = fibonacciService;
+        _fibonacciStartService = fibonacciStartService;
     }
 
     [HttpPost]
     public async Task<IActionResult> StartCalculationsAsync([FromQuery] int numberOfLaunches)
     {
-        await _fibonacciService.StartCalculationsAsync(numberOfLaunches).ConfigureAwait(false);
+        await _fibonacciStartService.StartCalculationsAsync(numberOfLaunches).ConfigureAwait(false);
         return Ok("Calculations started");
     }
 }
