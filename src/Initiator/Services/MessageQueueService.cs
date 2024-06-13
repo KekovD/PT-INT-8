@@ -73,7 +73,7 @@ public class MessageQueueService : IMessageQueueService
                     .Append(subscribeRetryCount)
                     .Append("...");
                 
-                _logStrategy.Log(logBuilder.ToString());
+                await _logStrategy.LogAsync(logBuilder.ToString()).ConfigureAwait(false);
                 
                 await Task.Delay(retryDelayMilliseconds).ConfigureAwait(false);
             }
@@ -85,6 +85,6 @@ public class MessageQueueService : IMessageQueueService
             .Append(subscribeRetryCount)
             .Append(" attempts.");
         
-        _logStrategy.Log(logBuilder.ToString());
+        await _logStrategy.LogAsync(logBuilder.ToString()).ConfigureAwait(false);
     }
 }

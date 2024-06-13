@@ -34,7 +34,7 @@ public class SendNextService : ISendNextService
             .Append(", StartId=")
             .Append(newState.StartId);
 
-        _logStrategy.Log(logBuilder.ToString());
+        _logStrategy.LogAsync(logBuilder.ToString());
 
         await _bus.PubSub.PublishAsync(newState).ConfigureAwait(false);
     }

@@ -42,7 +42,7 @@ public class HttpClientService : IHttpClientService
             .Append(", StartId=")
             .Append(state.StartId);
 
-        _logStrategy.Log(logBuilder.ToString());
+        await _logStrategy.LogAsync(logBuilder.ToString()).ConfigureAwait(false);
 
         await client.PostAsJsonAsync(_calculatorUrl, state).ConfigureAwait(false);
     }

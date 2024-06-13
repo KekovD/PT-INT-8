@@ -1,6 +1,8 @@
+using System.Threading.Tasks;
+
 namespace SharedModels;
 
 public interface ILogStrategy
 {
-    void Log(string message);
+    Task LogAsync(string message);
 }
