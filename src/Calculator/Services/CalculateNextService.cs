@@ -29,7 +29,7 @@ public class CalculateNextService : ICalculateNextService
         
         var logBuilder = new StringBuilder();
         
-        logBuilder.Append("Received Fibonacci state: Previous=")
+        logBuilder.Append("Sent Fibonacci state: Previous=")
             .Append(newState.Previous)
             .Append(", Current=")
             .Append(newState.Current)

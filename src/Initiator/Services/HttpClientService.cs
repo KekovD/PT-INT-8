@@ -27,7 +27,7 @@ public class HttpClientService : IHttpClientService
         HttpClient client = _httpClientFactory.CreateClient();
 
         if (!state.Previous.Equals("0", StringComparison.InvariantCulture)
-            && !state.Previous.Equals("1", StringComparison.InvariantCulture))
+            || !state.Current.Equals("1", StringComparison.InvariantCulture))
         {
             var previous = BigInteger.Parse(state.Previous);
             var current = BigInteger.Parse(state.Current);
@@ -38,7 +38,7 @@ public class HttpClientService : IHttpClientService
 
         var logBuilder = new StringBuilder();
         
-        logBuilder.Append("Received Fibonacci state: Previous=")
+        logBuilder.Append("Sent Fibonacci state: Previous=")
             .Append(state.Previous)
             .Append(", Current=")
             .Append(state.Current)
