@@ -12,26 +12,26 @@ public class HttpClientService : IHttpClientService
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly string _calculatorUrl;
     private readonly ILogStrategy _logStrategy;
-    private readonly IFibonacciCalculatorService _fibonacciCalculatorService;
+    private readonly ICalculateNextService _calculateNextService;
         
     public HttpClientService(
         IHttpClientFactory httpClientFactory,
         string calculatorUrl,
         ILogStrategy logStrategy,
-        IFibonacciCalculatorService fibonacciCalculatorService
+        ICalculateNextService calculateNextService
         )
     {
         _httpClientFactory = httpClientFactory;
         _calculatorUrl = calculatorUrl;
         _logStrategy = logStrategy;
-        _fibonacciCalculatorService = fibonacciCalculatorService;
+        _calculateNextService = calculateNextService;
     }
 
     public async Task SendStateToCalculatorAsync(FibonacciState state)
     {
         HttpClient client = _httpClientFactory.CreateClient();
 
-        state = _fibonacciCalculatorService.CalculateNewState(state);
+        state = _calculateNextService.CalculateNext(state);
 
         var logBuilder = new StringBuilder();
         
