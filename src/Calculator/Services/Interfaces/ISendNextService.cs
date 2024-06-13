@@ -3,7 +3,7 @@ using SharedModels;
 
 namespace Calculator.Services.Interfaces;
 
-public interface ICalculateNextService
+public interface ISendNextService
 {
-    FibonacciState CalculateNext(FibonacciState state);
+    Task SendNext(FibonacciState state);
 }

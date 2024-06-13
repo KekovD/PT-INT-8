@@ -24,6 +24,7 @@ public class Program
         
         builder.Services.AddTransient<CalculatorController>();
         builder.Services.AddTransient<ICalculateNextService, CalculateNextService>();
+        builder.Services.AddTransient<ISendNextService, SendNextService>();
         builder.Services.AddTransient<ILogStrategy, ConsoleLogStrategy>();
         
         WebApplication app = builder.Build();
