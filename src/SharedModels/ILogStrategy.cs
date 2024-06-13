@@ -1,4 +1,4 @@
-namespace Initiator.Services.Interfaces;
+namespace SharedModels;
 
 public interface ILogStrategy
 {

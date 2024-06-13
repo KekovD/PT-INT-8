@@ -1,7 +1,9 @@
+using System;
 using Initiator.Services.Interfaces;
 using SharedModels;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,6 +25,16 @@ public class HttpClientService : IHttpClientService
     public async Task SendStateToCalculatorAsync(FibonacciState state)
     {
         HttpClient client = _httpClientFactory.CreateClient();
+
+        if (!state.Previous.Equals("0", StringComparison.InvariantCulture)
+            && !state.Previous.Equals("1", StringComparison.InvariantCulture))
+        {
+            var previous = BigInteger.Parse(state.Previous);
+            var current = BigInteger.Parse(state.Current);
+            var newCurrent = BigInteger.Add(previous, current);
+        
+            state = new FibonacciState(state.Current, newCurrent.ToString(), state.StartId, DateTime.Now);
+        }
 
         var logBuilder = new StringBuilder();
         

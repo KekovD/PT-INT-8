@@ -1,7 +1,7 @@
-using SharedModels;
 using System.Threading.Tasks;
+using SharedModels;
 
-namespace Calculator.Services;
+namespace Calculator.Services.Interfaces;
 
 public interface ICalculateNextService
 {

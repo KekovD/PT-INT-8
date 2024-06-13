@@ -1,4 +1,4 @@
-using Calculator.Services;
+using Calculator.Services.Interfaces;
 using EasyNetQ;
 using Microsoft.AspNetCore.Mvc;
 using SharedModels;

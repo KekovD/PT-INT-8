@@ -1,11 +1,13 @@
 using Calculator.Controllers;
 using Calculator.Services;
+using Calculator.Services.Interfaces;
 using EasyNetQ;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading.Tasks;
+using SharedModels;
 
 namespace Calculator;
 
@@ -22,6 +24,7 @@ public class Program
         
         builder.Services.AddTransient<CalculatorController>();
         builder.Services.AddTransient<ICalculateNextService, CalculateNextService>();
+        builder.Services.AddTransient<ILogStrategy, ConsoleLogStrategy>();
         
         WebApplication app = builder.Build();
 

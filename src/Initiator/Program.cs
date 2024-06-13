@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SharedModels;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -41,10 +42,10 @@ namespace Initiator;
                             services.AddSingleton<IBus>(provider =>
                                 RabbitHutch.CreateBus(rabbitConnectionString));
 
-                            services.AddSingleton<ILogStrategy, ConsoleLogStrategy>();
-                            services.AddSingleton<IFibonacciService, FibonacciService>();
+                            services.AddTransient<ILogStrategy, ConsoleLogStrategy>();
+                            services.AddTransient<IFibonacciService, FibonacciService>();
 
-                            services.AddSingleton<IMessageQueueService>(provider =>
+                            services.AddTransient<IMessageQueueService>(provider =>
                                 new MessageQueueService(
                                     bus: provider.GetRequiredService<IBus>(),
                                     httpClientService: provider.GetRequiredService<IHttpClientService>(),
@@ -53,7 +54,7 @@ namespace Initiator;
                                     logStrategy: provider.GetRequiredService<ILogStrategy>()
                                 ));
 
-                            services.AddSingleton<IHttpClientService>(provider =>
+                            services.AddTransient<IHttpClientService>(provider =>
                                 new HttpClientService(
                                     httpClientFactory: provider.GetRequiredService<IHttpClientFactory>(),
                                     calculatorUrl: calculatorUrl,

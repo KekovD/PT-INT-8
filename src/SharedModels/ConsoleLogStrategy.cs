@@ -1,7 +1,6 @@
-using Initiator.Services.Interfaces;
 using System;
 
-namespace Initiator.Services;
+namespace SharedModels;
 
 public class ConsoleLogStrategy : ILogStrategy
 {
