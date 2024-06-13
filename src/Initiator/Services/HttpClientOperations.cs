@@ -19,7 +19,7 @@ public class HttpClientOperations : IHttpOperations
 
     public async Task PostAsJsonAsync<T>(string uri, T value, CancellationToken cancellationToken)
     {
-        if (uri == null)
+        if (uri is null)
             throw new ArgumentNullException(nameof(uri));
 
         var content = new StringContent(JsonConvert.SerializeObject(value), Encoding.UTF8, "application/json");
