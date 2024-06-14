@@ -8,13 +8,28 @@ namespace Calculator.Services;
 
 public class CalculateNextService : ICalculateNextService
 {
-    public Task<FibonacciState> CalculateNextAsync(FibonacciState state)
-    {
-        var previous = BigInteger.Parse(state.Previous);
-        var current = BigInteger.Parse(state.Current);
-        var newCurrent = BigInteger.Add(previous, current);
+    private readonly ILogStrategy _logStrategy;
 
-        return Task.FromResult(
-            new FibonacciState(state.Current, newCurrent.ToString(), state.StartId, DateTime.Now));
+    public CalculateNextService(ILogStrategy logStrategy)
+    {
+        _logStrategy = logStrategy;
+    }
+
+    public async Task<FibonacciState> CalculateNextAsync(FibonacciState state)
+    {
+        try
+        {
+            var previous = BigInteger.Parse(state.Previous);
+            var current = BigInteger.Parse(state.Current);
+            var newCurrent = BigInteger.Add(previous, current);
+
+            return new FibonacciState(state.Current, newCurrent.ToString(), state.StartId, DateTime.Now);
+        }
+        catch (FormatException ex)
+        {
+            var errorMessage = $"Parsing error: {ex.Message}";
+            await _logStrategy.LogAsync(errorMessage).ConfigureAwait(false);
+            throw new InvalidOperationException(errorMessage, ex);
+        }
     }
 }
