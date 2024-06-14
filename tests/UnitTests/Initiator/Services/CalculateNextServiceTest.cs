@@ -18,9 +18,9 @@ public class CalculateNextServiceTest
 
         mockParserAndUpdater.Setup(x =>
                 x.ParseAndUpdateStateAsync(It.IsAny<FibonacciState>()))
-            .ReturnsAsync(new FibonacciState(Previous: "1", Current: "1", StartId: 1, DateTime.Now));
+            .ReturnsAsync(new FibonacciState(Previous: "1", Current: "1", StartId: 1, DateTime.UtcNow));
 
-        var initialState = new FibonacciState(Previous: "0", Current: "1", StartId: 1, DateTime.Now);
+        var initialState = new FibonacciState(Previous: "0", Current: "1", StartId: 1, DateTime.UtcNow);
 
         var service = new CalculateNextService(
             startPrevious, startCurrent, mockLogStrategy.Object, mockParserAndUpdater.Object);
@@ -40,10 +40,10 @@ public class CalculateNextServiceTest
 
         mockParserAndUpdater.Setup(x =>
                 x.ParseAndUpdateStateAsync(It.IsAny<FibonacciState>()))
-            .ReturnsAsync(new FibonacciState(Previous: "1", Current: "2", StartId: 1, DateTime.Now));
+            .ReturnsAsync(new FibonacciState(Previous: "1", Current: "2", StartId: 1, DateTime.UtcNow));
 
-        var initialState = new FibonacciState(Previous: "1", Current: "1", StartId: 1, DateTime.Now);
-        var updatedState = new FibonacciState(Previous: "1", Current: "2", StartId: 1, DateTime.Now);
+        var initialState = new FibonacciState(Previous: "1", Current: "1", StartId: 1, DateTime.UtcNow);
+        var updatedState = new FibonacciState(Previous: "1", Current: "2", StartId: 1, DateTime.UtcNow);
 
         var service = new CalculateNextService(
             startPrevious, startCurrent, mockLogStrategy.Object, mockParserAndUpdater.Object);
@@ -70,7 +70,7 @@ public class CalculateNextServiceTest
         var startPrevious = "0";
         var startCurrent = "1";
         int startId = 0;
-        var invalidState = new FibonacciState(Previous: "not_a_number", Current: "1", startId, DateTime.Now);
+        var invalidState = new FibonacciState(Previous: "not_a_number", Current: "1", startId, DateTime.UtcNow);
         var service = new CalculateNextService(startPrevious, startCurrent, mockLogStrategy.Object, mockParserAndUpdater.Object);
 
         await Assert.ThrowsAsync<InvalidOperationException>(async () =>

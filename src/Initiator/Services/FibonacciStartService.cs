@@ -45,7 +45,7 @@ public class FibonacciStartService : IFibonacciStartService
 
         for (int i = 0; i < numberOfLaunches; i++)
         {
-            var state = new FibonacciState(_startPrevious.ToString(), _startCurrent.ToString(), StartId: i, DateTime.Now);
+            var state = new FibonacciState(_startPrevious.ToString(), _startCurrent.ToString(), StartId: i, DateTime.UtcNow);
             tasks.Add(_httpClientService.SendStateToCalculatorAsync(state));
         }
 

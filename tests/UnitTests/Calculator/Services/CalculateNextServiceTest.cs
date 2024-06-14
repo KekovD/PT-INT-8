@@ -16,10 +16,10 @@ public class CalculateNextServiceTest
 
         mockParserAndUpdater.Setup(x =>
                 x.ParseAndUpdateStateAsync(It.IsAny<FibonacciState>()))
-            .ReturnsAsync(new FibonacciState(Previous: "2", Current: "3", StartId: 1, DateTime.Now));
+            .ReturnsAsync(new FibonacciState(Previous: "2", Current: "3", StartId: 1, DateTime.UtcNow));
 
-        var initialState = new FibonacciState(Previous: "1", Current: "2", StartId: 1, DateTime.Now);
-        var updatedState = new FibonacciState(Previous: "2", Current: "3", StartId: 1, DateTime.Now);
+        var initialState = new FibonacciState(Previous: "1", Current: "2", StartId: 1, DateTime.UtcNow);
+        var updatedState = new FibonacciState(Previous: "2", Current: "3", StartId: 1, DateTime.UtcNow);
 
         var service = new CalculateNextService(mockLogStrategy.Object, mockParserAndUpdater.Object);
 
@@ -42,7 +42,7 @@ public class CalculateNextServiceTest
                 x.ParseAndUpdateStateAsync(It.IsAny<FibonacciState>()))
             .ThrowsAsync(new FormatException());
 
-        var initialState = new FibonacciState(Previous: "1", Current: "invalid", StartId: 1, DateTime.Now);
+        var initialState = new FibonacciState(Previous: "1", Current: "invalid", StartId: 1, DateTime.UtcNow);
 
         var service = new CalculateNextService(mockLogStrategy.Object, mockParserAndUpdater.Object);
 

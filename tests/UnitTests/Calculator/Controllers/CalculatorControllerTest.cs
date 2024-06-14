@@ -2,7 +2,6 @@ using System;
 using System.Threading.Tasks;
 using Calculator.Controllers;
 using Calculator.Services.Interfaces;
-using EasyNetQ;
 using Microsoft.AspNetCore.Mvc;
 using SharedModels;
 using SharedModels.Interfaces;
@@ -16,9 +15,8 @@ public class CalculatorControllerTest
     {
         var mockSendNextService = new Mock<ISendNextService>();
         var mockLogStrategy = new Mock<ILogStrategy>();
-        var mockBus = new Mock<IBus>();
-        var controller = new CalculatorController(mockSendNextService.Object, mockBus.Object, mockLogStrategy.Object);
-        var state = new FibonacciState(Previous: "1", Current: "2", StartId: 1, DateTime.Now); 
+        var controller = new CalculatorController(mockSendNextService.Object, mockLogStrategy.Object);
+        var state = new FibonacciState(Previous: "1", Current: "2", StartId: 1, DateTime.UtcNow); 
 
         var result = await controller.ReceiveMessageAsync(state);
 
@@ -35,13 +33,12 @@ public class CalculatorControllerTest
     {
         var mockSendNextService = new Mock<ISendNextService>();
         var mockLogStrategy = new Mock<ILogStrategy>();
-        var mockBus = new Mock<IBus>();
         
         mockSendNextService.Setup(service => service.SendNextAsync(It.IsAny<FibonacciState>()))
             .ThrowsAsync(new InvalidOperationException("Mock Exception"));
         
-        var controller = new CalculatorController(mockSendNextService.Object, mockBus.Object, mockLogStrategy.Object);
-        var state = new FibonacciState(Previous: "1", Current: "2", StartId: 1, DateTime.Now); 
+        var controller = new CalculatorController(mockSendNextService.Object, mockLogStrategy.Object);
+        var state = new FibonacciState(Previous: "1", Current: "2", StartId: 1, DateTime.UtcNow); 
         
         var result = await controller.ReceiveMessageAsync(state);
 

@@ -24,14 +24,14 @@ public class HttpClientServiceTest
             factory.CreateClient(It.IsAny<string>())).Returns(httpClientMock.Object);
 
         var calculatorUrl = "http://test.calculator";
-        var state = new FibonacciState(Previous: "1", Current: "1", StartId: 1, DateTime.Now);
+        var state = new FibonacciState(Previous: "1", Current: "1", StartId: 1, DateTime.UtcNow);
 
         var logMessageBuilder = new StringBuilder();
         logStrategyMock.Setup(log => log.LogAsync(It.IsAny<string>()))
             .Callback<string>(msg => logMessageBuilder.Append(msg))
             .Returns(Task.CompletedTask);
 
-        var calculatedState = new FibonacciState(Previous: "1", Current: "2", StartId: 1, DateTime.Now);
+        var calculatedState = new FibonacciState(Previous: "1", Current: "2", StartId: 1, DateTime.UtcNow);
         calculateNextServiceMock.Setup(service => service.CalculateNextAsync(state))
             .ReturnsAsync(calculatedState);
 

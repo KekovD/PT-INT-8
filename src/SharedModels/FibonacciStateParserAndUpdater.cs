@@ -14,6 +14,6 @@ public class FibonacciStateParserAndUpdater : IFibonacciStateParserAndUpdater
         var newCurrent = BigInteger.Add(previous, current);
 
         return Task.FromResult(
-            new FibonacciState(state.Current, newCurrent.ToString(), state.StartId, DateTime.Now));
+            new FibonacciState(state.Current, newCurrent.ToString(), state.StartId, DateTime.UtcNow));
     }
 }

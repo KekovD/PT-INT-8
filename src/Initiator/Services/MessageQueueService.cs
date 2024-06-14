@@ -53,7 +53,7 @@ public class MessageQueueService : IMessageQueueService
                 await _bus.PubSub.SubscribeAsync<FibonacciState>(queueName,
                     async state =>
                     {
-                        var difference = DateTime.Now - state.SendTime;
+                        var difference = DateTime.UtcNow - state.SendTime;
                         const int maxTimeDifference = 8;
                         
                         if (difference.TotalSeconds > maxTimeDifference) return;

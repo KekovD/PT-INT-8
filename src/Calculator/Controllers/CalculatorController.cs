@@ -15,7 +15,7 @@ public class CalculatorController : ControllerBase
     private readonly ISendNextService _sendNextService;
     private readonly ILogStrategy _logStrategy;
 
-    public CalculatorController(ISendNextService sendNextService, IBus bus, ILogStrategy logStrategy)
+    public CalculatorController(ISendNextService sendNextService, ILogStrategy logStrategy)
     {
         _sendNextService = sendNextService;
         _logStrategy = logStrategy;

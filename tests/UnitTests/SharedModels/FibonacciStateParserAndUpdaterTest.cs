@@ -9,7 +9,7 @@ public class FibonacciStateParserAndUpdaterTest
     [Fact]
     public async Task ParseAndUpdateStateAsync_ShouldUpdateValuesCorrectly()
     {
-        var initialState = new FibonacciState("0", "1", 1, DateTime.Now);
+        var initialState = new FibonacciState(Previous: "0", Current: "1", StartId: 1, DateTime.UtcNow);
         var parserAndUpdater = new FibonacciStateParserAndUpdater();
 
         var updatedState = await parserAndUpdater.ParseAndUpdateStateAsync(initialState);
