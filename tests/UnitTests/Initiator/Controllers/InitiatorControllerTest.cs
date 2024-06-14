@@ -3,6 +3,7 @@ using Initiator.Controllers;
 using Initiator.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using SharedModels;
 
 namespace Tests.Initiator.Controllers;
 
@@ -12,11 +13,14 @@ public class InitiatorControllerTest
     public async Task StartCalculationsAsync_ReturnsOkResult()
     {
         var mockFibonacciStartService = new Mock<IFibonacciStartService>();
+        
         mockFibonacciStartService
             .Setup(service => service.StartCalculationsAsync(It.IsAny<int>()))
             .Returns(Task.CompletedTask);
 
-        var controller = new InitiatorController(mockFibonacciStartService.Object);
+        var mockLogger = new Mock<ILogStrategy>();
+        
+        var controller = new InitiatorController(mockFibonacciStartService.Object, mockLogger.Object);
 
         int numberOfLaunches = 5;
 
@@ -33,11 +37,14 @@ public class InitiatorControllerTest
     public async Task StartCalculationsAsync_ReturnsBadRequestOnException()
     {
         var mockFibonacciStartService = new Mock<IFibonacciStartService>();
+        
         mockFibonacciStartService
             .Setup(service => service.StartCalculationsAsync(It.IsAny<int>()))
             .ThrowsAsync(new Exception("Test exception"));
+        
+        var mockLogger = new Mock<ILogStrategy>();
 
-        var controller = new InitiatorController(mockFibonacciStartService.Object);
+        var controller = new InitiatorController(mockFibonacciStartService.Object, mockLogger.Object);
 
         int numberOfLaunches = 5;
 

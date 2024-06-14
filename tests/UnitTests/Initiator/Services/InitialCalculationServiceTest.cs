@@ -5,6 +5,7 @@ using Initiator.Controllers;
 using Initiator.Services;
 using Initiator.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using SharedModels;
 
 namespace Tests.Initiator.Services;
 
@@ -16,11 +17,14 @@ public class InitialCalculationServiceTest
         var numberOfLaunches = 5;
 
         var fibonacciStartServiceMock = new Mock<IFibonacciStartService>();
+        
         fibonacciStartServiceMock
             .Setup(service => service.StartCalculationsAsync(It.IsAny<int>()))
             .Returns(Task.CompletedTask);
+        
+        var mockLogger = new Mock<ILogStrategy>();
 
-        var initiatorController = new InitiatorController(fibonacciStartServiceMock.Object);
+        var initiatorController = new InitiatorController(fibonacciStartServiceMock.Object, mockLogger.Object);
 
         var serviceProviderMock = new Mock<IServiceProvider>();
         var scopeMock = new Mock<IServiceScope>();
