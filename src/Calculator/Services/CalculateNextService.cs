@@ -1,5 +1,4 @@
 using System;
-using System.Numerics;
 using System.Threading.Tasks;
 using Calculator.Services.Interfaces;
 using SharedModels;
