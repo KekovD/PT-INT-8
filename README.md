@@ -9,10 +9,10 @@
  - QUEUE_NAME - имя очереди в RabbitMQ, на которую подписывается приложение
  - CALCULATOR_URL - url контроллера второго приложения
  - RabbitMQ__ConnectionString - строка подключения к RabbitMQ
- - ASPNETCORE_ENVIRONMENT - среду выполнения приложения
+ - ASPNETCORE_ENVIRONMENT - среда выполнения приложения
 
 ### Второе приложение - Calculator
 
 #### Переменные в docker-compose.yml для изменения параметров запуска:
  - RabbitMQ__ConnectionString - строка подключения к RabbitMQ
- - ASPNETCORE_ENVIRONMENT - среду выполнения приложения
+ - ASPNETCORE_ENVIRONMENT - среда выполнения приложения
