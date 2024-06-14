@@ -68,7 +68,8 @@ public class Program
                         services.AddTransient<ICalculateNextService>(provider =>
                             new CalculateNextService(
                                 startPrevious: startPrevious.ToString(),
-                                startCurrent: startCurrent.ToString()
+                                startCurrent: startCurrent.ToString(),
+                                logStrategy: provider.GetRequiredService<ILogStrategy>()
                             ));
 
                         services.AddTransient<IHttpClientService>(provider =>
