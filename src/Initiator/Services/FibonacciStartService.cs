@@ -1,9 +1,9 @@
 using Initiator.Services.Interfaces;
 using SharedModels;
+using SharedModels.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using SharedModels.Interfaces;
 
 namespace Initiator.Services;
 

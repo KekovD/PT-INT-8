@@ -1,7 +1,7 @@
+using SharedModels.Interfaces;
 using System;
 using System.Numerics;
 using System.Threading.Tasks;
-using SharedModels.Interfaces;
 
 namespace SharedModels;
 

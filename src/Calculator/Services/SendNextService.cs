@@ -1,9 +1,9 @@
+using Calculator.Services.Interfaces;
 using EasyNetQ;
 using SharedModels;
+using SharedModels.Interfaces;
 using System.Text;
 using System.Threading.Tasks;
-using Calculator.Services.Interfaces;
-using SharedModels.Interfaces;
 
 namespace Calculator.Services;
 

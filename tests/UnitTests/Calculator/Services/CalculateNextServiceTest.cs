@@ -1,8 +1,8 @@
-using System;
-using System.Threading.Tasks;
 using Calculator.Services;
 using SharedModels;
 using SharedModels.Interfaces;
+using System;
+using System.Threading.Tasks;
 
 namespace Tests.Calculator.Services;
 

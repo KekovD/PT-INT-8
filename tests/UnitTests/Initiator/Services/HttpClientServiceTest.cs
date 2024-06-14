@@ -1,12 +1,12 @@
+using Initiator.Services;
+using Initiator.Services.Interfaces;
+using SharedModels;
+using SharedModels.Interfaces;
 using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Initiator.Services;
-using Initiator.Services.Interfaces;
-using SharedModels;
-using SharedModels.Interfaces;
 
 namespace Tests.Initiator.Services;
 

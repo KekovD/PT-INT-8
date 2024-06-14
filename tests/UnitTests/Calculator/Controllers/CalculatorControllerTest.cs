@@ -1,10 +1,10 @@
-using System;
-using System.Threading.Tasks;
 using Calculator.Controllers;
 using Calculator.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using SharedModels;
 using SharedModels.Interfaces;
+using System;
+using System.Threading.Tasks;
 
 namespace Tests.Calculator.Controllers;
 

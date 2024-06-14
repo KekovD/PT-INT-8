@@ -7,10 +7,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SharedModels;
+using SharedModels.Interfaces;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using SharedModels.Interfaces;
 
 namespace Initiator;
 

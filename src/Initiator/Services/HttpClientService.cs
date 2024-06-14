@@ -1,10 +1,10 @@
 using Initiator.Services.Interfaces;
 using SharedModels;
+using SharedModels.Interfaces;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
-using SharedModels.Interfaces;
 
 namespace Initiator.Services;
 

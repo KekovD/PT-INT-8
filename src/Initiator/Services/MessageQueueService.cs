@@ -1,10 +1,10 @@
 using EasyNetQ;
 using Initiator.Services.Interfaces;
 using SharedModels;
+using SharedModels.Interfaces;
 using System;
 using System.Text;
 using System.Threading.Tasks;
-using SharedModels.Interfaces;
 
 namespace Initiator.Services;
 

@@ -1,6 +1,6 @@
+using SharedModels;
 using System;
 using System.Threading.Tasks;
-using SharedModels;
 
 namespace Tests.SharedModels;
 

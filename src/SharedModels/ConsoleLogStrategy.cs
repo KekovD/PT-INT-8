@@ -1,6 +1,6 @@
+using SharedModels.Interfaces;
 using System;
 using System.Threading.Tasks;
-using SharedModels.Interfaces;
 
 namespace SharedModels;
 

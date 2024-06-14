@@ -1,10 +1,9 @@
-using System;
 using Initiator.Controllers;
 using Initiator.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using SharedModels;
 using SharedModels.Interfaces;
+using System;
+using System.Threading.Tasks;
 
 namespace Tests.Initiator.Controllers;
 

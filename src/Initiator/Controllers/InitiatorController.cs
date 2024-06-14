@@ -1,8 +1,8 @@
-using System;
 using Initiator.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using SharedModels.Interfaces;
+using System;
+using System.Threading.Tasks;
 
 namespace Initiator.Controllers;
 

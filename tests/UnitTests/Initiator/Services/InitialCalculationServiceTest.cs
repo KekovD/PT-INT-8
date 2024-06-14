@@ -1,12 +1,11 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Initiator.Controllers;
 using Initiator.Services;
 using Initiator.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
-using SharedModels;
 using SharedModels.Interfaces;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Tests.Initiator.Services;
 
