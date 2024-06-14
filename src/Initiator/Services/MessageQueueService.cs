@@ -1,6 +1,7 @@
 using EasyNetQ;
 using Initiator.Services.Interfaces;
 using SharedModels;
+using SharedModels.Interfaces;
 using System;
 using System.Text;
 using System.Threading.Tasks;
@@ -52,7 +53,7 @@ public class MessageQueueService : IMessageQueueService
                 await _bus.PubSub.SubscribeAsync<FibonacciState>(queueName,
                     async state =>
                     {
-                        var difference = DateTime.Now - state.SendTime;
+                        var difference = DateTime.UtcNow - state.SendTime;
                         const int maxTimeDifference = 8;
                         
                         if (difference.TotalSeconds > maxTimeDifference) return;
@@ -67,13 +68,14 @@ public class MessageQueueService : IMessageQueueService
 
                 int retryNumber = i + 1;
                 
-                logBuilder.Append("Failed to subscribe to messages. Retry attempt ")
+                logBuilder
+                    .Append("Failed to subscribe to messages. Retry attempt ")
                     .Append(retryNumber)
                     .Append('/')
                     .Append(subscribeRetryCount)
                     .Append("...");
                 
-                _logStrategy.Log(logBuilder.ToString());
+                await _logStrategy.LogAsync(logBuilder.ToString()).ConfigureAwait(false);
                 
                 await Task.Delay(retryDelayMilliseconds).ConfigureAwait(false);
             }
@@ -85,6 +87,6 @@ public class MessageQueueService : IMessageQueueService
             .Append(subscribeRetryCount)
             .Append(" attempts.");
         
-        _logStrategy.Log(logBuilder.ToString());
+        await _logStrategy.LogAsync(logBuilder.ToString()).ConfigureAwait(false);
     }
 }

@@ -1,7 +1,8 @@
-using Calculator.Services;
-using EasyNetQ;
+using Calculator.Services.Interfaces; 
 using Microsoft.AspNetCore.Mvc;
 using SharedModels;
+using SharedModels.Interfaces;
+using System;
 using System.Threading.Tasks;
 
 namespace Calculator.Controllers;
@@ -10,17 +11,28 @@ namespace Calculator.Controllers;
 [Route("[controller]")]
 public class CalculatorController : ControllerBase
 {
-    private readonly ICalculateNextService _calculateNextService;
+    private readonly ISendNextService _sendNextService;
+    private readonly ILogStrategy _logStrategy;
 
-    public CalculatorController(ICalculateNextService calculateNextService, IBus bus)
+    public CalculatorController(ISendNextService sendNextService, ILogStrategy logStrategy)
     {
-        _calculateNextService = calculateNextService;
+        _sendNextService = sendNextService;
+        _logStrategy = logStrategy;
     }
 
     [HttpPost("receive")]
-    public async Task<IActionResult> ReceiveMessage([FromBody] FibonacciState state)
+    public async Task<IActionResult> ReceiveMessageAsync([FromBody] FibonacciState state)
     {
-        await _calculateNextService.CalculateNext(state).ConfigureAwait(false);
-        return Ok();
+        try
+        {
+            await _sendNextService.SendNextAsync(state).ConfigureAwait(false);
+            return Ok();
+        }
+        catch (Exception)
+        {
+            var errorMessage = "An error occurred while receiving state";
+            await _logStrategy.LogAsync(errorMessage).ConfigureAwait(false);
+            return BadRequest(errorMessage);
+        }
     }
 }

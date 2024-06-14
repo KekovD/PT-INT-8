@@ -1,9 +1,12 @@
 using Calculator.Controllers;
 using Calculator.Services;
+using Calculator.Services.Interfaces;
 using EasyNetQ;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SharedModels;
+using SharedModels.Interfaces;
 using System;
 using System.Threading.Tasks;
 
@@ -21,7 +24,10 @@ public class Program
             RabbitHutch.CreateBus(Environment.GetEnvironmentVariable("RabbitMQ__ConnectionString")));
         
         builder.Services.AddTransient<CalculatorController>();
+        builder.Services.AddTransient<IFibonacciStateParserAndUpdater, FibonacciStateParserAndUpdater> ();
         builder.Services.AddTransient<ICalculateNextService, CalculateNextService>();
+        builder.Services.AddTransient<ISendNextService, SendNextService>();
+        builder.Services.AddTransient<ILogStrategy, ConsoleLogStrategy>();
         
         WebApplication app = builder.Build();
 
