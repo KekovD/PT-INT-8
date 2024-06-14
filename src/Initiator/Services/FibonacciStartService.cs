@@ -39,7 +39,7 @@ public class FibonacciStartService : IFibonacciStartService
             throw new ArgumentOutOfRangeException(nameof(numberOfLaunches), errorMessage);
         }
         
-        await _messageQueueService.DeclareAndSubscribeToQueueWithTtlAsync().ConfigureAwait(false);
+        await _messageQueueService.SubscribeToMessages().ConfigureAwait(false);
 
         var tasks = new List<Task>();
 

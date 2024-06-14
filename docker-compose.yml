@@ -19,7 +19,6 @@ services:
       - RabbitMQ__ConnectionString=host=rabbitmq
       - QUEUE_NAME=Initiator_queue
       - CALCULATOR_URL=http://calculator:8080/calculator/receive
-      - MESSAGE_TTL=8
       - START_PREVIOUS=0
       - START_CURRENT=1
       - NUMBER_OF_LAUNCHES=3

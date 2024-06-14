@@ -13,34 +13,22 @@ public class MessageQueueService : IMessageQueueService
     private readonly IBus _bus;
     private readonly IHttpClientService _httpClientService;
     private readonly string _queueName;
-    private readonly int _messageTtl;
     private readonly ILogStrategy _logStrategy;
 
     public MessageQueueService(
         IBus bus,
         IHttpClientService httpClientService,
         string queueName,
-        int messageTtl,
         ILogStrategy logStrategy
         )
     {
         _bus = bus;
         _httpClientService = httpClientService;
         _queueName = queueName;
-        _messageTtl = messageTtl;
         _logStrategy = logStrategy;
     }
 
-    public async Task DeclareAndSubscribeToQueueWithTtlAsync()
-    {
-        _bus.Advanced.QueueDeclare(_queueName, c => c
-            .WithMessageTtl(TimeSpan.FromSeconds(_messageTtl)));
-
-        await SubscribeToMessages(_queueName).ConfigureAwait(false);
-    }
-
-
-    private async Task SubscribeToMessages(string queueName)
+    public async Task SubscribeToMessages()
     {
         var logBuilder = new StringBuilder();
         const int retryDelayMilliseconds = 1000;
@@ -50,7 +38,7 @@ public class MessageQueueService : IMessageQueueService
         {
             try
             {
-                await _bus.PubSub.SubscribeAsync<FibonacciState>(queueName,
+                await _bus.PubSub.SubscribeAsync<FibonacciState>(_queueName,
                     async state =>
                     {
                         var difference = DateTime.UtcNow - state.SendTime;

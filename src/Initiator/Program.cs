@@ -22,7 +22,6 @@ public class Program
         var queueName = Environment.GetEnvironmentVariable("QUEUE_NAME");
         var calculatorUrl = Environment.GetEnvironmentVariable("CALCULATOR_URL");
 
-        int messageTtl = ParseEnvironmentVariable("MESSAGE_TTL", defaultValue: 8);
         int numberOfLaunches = ParseEnvironmentVariable("NUMBER_OF_LAUNCHES", defaultValue: 5);
         int startPrevious = ParseEnvironmentVariable("START_PREVIOUS", defaultValue: 0);
         int startCurrent = ParseEnvironmentVariable("START_CURRENT", defaultValue: 1);
@@ -51,7 +50,6 @@ public class Program
                                 bus: provider.GetRequiredService<IBus>(),
                                 httpClientService: provider.GetRequiredService<IHttpClientService>(),
                                 queueName: queueName,
-                                messageTtl: messageTtl,
                                 logStrategy: provider.GetRequiredService<ILogStrategy>()
                             ));
 

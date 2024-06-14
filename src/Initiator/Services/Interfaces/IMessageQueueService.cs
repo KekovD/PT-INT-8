@@ -4,5 +4,5 @@ namespace Initiator.Services.Interfaces;
 
 public interface IMessageQueueService
 {
-    Task DeclareAndSubscribeToQueueWithTtlAsync();
+    Task SubscribeToMessages();
 }
