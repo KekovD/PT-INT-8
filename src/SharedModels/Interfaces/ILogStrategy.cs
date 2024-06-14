@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace SharedModels;
+namespace SharedModels.Interfaces;
 
 public interface ILogStrategy
 {

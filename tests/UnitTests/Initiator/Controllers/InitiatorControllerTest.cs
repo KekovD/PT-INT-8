@@ -4,6 +4,7 @@ using Initiator.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using SharedModels;
+using SharedModels.Interfaces;
 
 namespace Tests.Initiator.Controllers;
 

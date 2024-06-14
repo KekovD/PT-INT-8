@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading.Tasks;
 using SharedModels;
+using SharedModels.Interfaces;
 
 namespace Calculator;
 

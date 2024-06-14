@@ -10,6 +10,7 @@ using SharedModels;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using SharedModels.Interfaces;
 
 namespace Initiator;
 

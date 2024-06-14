@@ -6,6 +6,7 @@ using Initiator.Services;
 using Initiator.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using SharedModels;
+using SharedModels.Interfaces;
 
 namespace Tests.Initiator.Services;
 

@@ -3,6 +3,7 @@ using Initiator.Services.Interfaces;
 using SharedModels;
 using System;
 using System.Threading.Tasks;
+using SharedModels.Interfaces;
 
 namespace Tests.Initiator.Services;
 

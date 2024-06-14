@@ -3,6 +3,7 @@ using SharedModels;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SharedModels.Interfaces;
 
 namespace Initiator.Services;
 

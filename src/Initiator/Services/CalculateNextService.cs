@@ -3,6 +3,7 @@ using System;
 using System.Numerics;
 using System.Threading.Tasks;
 using Initiator.Services.Interfaces;
+using SharedModels.Interfaces;
 
 namespace Initiator.Services;
 

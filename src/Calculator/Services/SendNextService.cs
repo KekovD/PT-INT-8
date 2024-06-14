@@ -3,6 +3,7 @@ using SharedModels;
 using System.Text;
 using System.Threading.Tasks;
 using Calculator.Services.Interfaces;
+using SharedModels.Interfaces;
 
 namespace Calculator.Services;
 
