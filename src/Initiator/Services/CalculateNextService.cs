@@ -1,6 +1,5 @@
 using SharedModels;
 using System;
-using System.Numerics;
 using System.Threading.Tasks;
 using Initiator.Services.Interfaces;
 using SharedModels.Interfaces;
@@ -12,12 +11,19 @@ public class CalculateNextService : ICalculateNextService
     private readonly string _startPrevious;
     private readonly string _startCurrent;
     private readonly ILogStrategy _logStrategy;
+    private readonly IFibonacciStateParserAndUpdater _parserAndUpdater;
 
-    public CalculateNextService(string startPrevious, string startCurrent, ILogStrategy logStrategy)
+    public CalculateNextService(
+        string startPrevious,
+        string startCurrent,
+        ILogStrategy logStrategy,
+        IFibonacciStateParserAndUpdater parserAndUpdater
+        )
     {
         _startPrevious = startPrevious;
         _startCurrent = startCurrent;
         _logStrategy = logStrategy;
+        _parserAndUpdater = parserAndUpdater;
     }
 
     public async Task<FibonacciState> CalculateNextAsync(FibonacciState state)
@@ -28,11 +34,7 @@ public class CalculateNextService : ICalculateNextService
 
         try
         {
-            var previous = BigInteger.Parse(state.Previous);
-            var current = BigInteger.Parse(state.Current);
-            var newCurrent = BigInteger.Add(previous, current);
-
-            return new FibonacciState(state.Current, newCurrent.ToString(), state.StartId, DateTime.Now);
+            return await _parserAndUpdater.ParseAndUpdateStateAsync(state).ConfigureAwait(false);
         }
         catch (FormatException ex)
         {

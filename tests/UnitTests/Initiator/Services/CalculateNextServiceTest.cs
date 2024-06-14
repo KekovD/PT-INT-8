@@ -12,11 +12,12 @@ public class CalculateNextServiceTest
     public async Task CalculateNextAsync_ReturnsStateUnchanged_WhenAlreadyMatchingStart()
     {
         var mockLogger = new Mock<ILogStrategy>();
+        var parserAndUpdater = new FibonacciStateParserAndUpdater();
         var startPrevious = "0";
         var startCurrent = "1";
         int startId = 0;
         var state = new FibonacciState(Previous: "0", Current: "1", startId, DateTime.Now);
-        var service = new CalculateNextService(startPrevious, startCurrent, mockLogger.Object);
+        var service = new CalculateNextService(startPrevious, startCurrent, mockLogger.Object, parserAndUpdater);
 
         var result = await service.CalculateNextAsync(state);
 
@@ -27,11 +28,12 @@ public class CalculateNextServiceTest
     public async Task CalculateNextAsync_ReturnsNewState_WhenNotMatchingStart()
     {
         var mockLogger = new Mock<ILogStrategy>();
+        var parserAndUpdater = new FibonacciStateParserAndUpdater();
         var startPrevious = "0";
         var startCurrent = "1";
         int startId = 0;
         var state = new FibonacciState(Previous: "1", Current: "1", startId, DateTime.Now);
-        var service = new CalculateNextService(startPrevious, startCurrent, mockLogger.Object);
+        var service = new CalculateNextService(startPrevious, startCurrent, mockLogger.Object, parserAndUpdater);
 
         var result = await service.CalculateNextAsync(state);
 
@@ -45,11 +47,12 @@ public class CalculateNextServiceTest
     public async Task CalculateNextAsync_ThrowsFormatException_WhenParsingFails()
     {
         var mockLogger = new Mock<ILogStrategy>();
+        var parserAndUpdater = new FibonacciStateParserAndUpdater();
         var startPrevious = "0";
         var startCurrent = "1";
         int startId = 0;
         var invalidState = new FibonacciState(Previous: "not_a_number", Current: "1", startId, DateTime.Now);
-        var service = new CalculateNextService(startPrevious, startCurrent, mockLogger.Object);
+        var service = new CalculateNextService(startPrevious, startCurrent, mockLogger.Object, parserAndUpdater);
 
         await Assert.ThrowsAsync<InvalidOperationException>(async () =>
         {

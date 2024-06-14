@@ -24,6 +24,7 @@ public class Program
             RabbitHutch.CreateBus(Environment.GetEnvironmentVariable("RabbitMQ__ConnectionString")));
         
         builder.Services.AddTransient<CalculatorController>();
+        builder.Services.AddTransient<IFibonacciStateParserAndUpdater, FibonacciStateParserAndUpdater> ();
         builder.Services.AddTransient<ICalculateNextService, CalculateNextService>();
         builder.Services.AddTransient<ISendNextService, SendNextService>();
         builder.Services.AddTransient<ILogStrategy, ConsoleLogStrategy>();

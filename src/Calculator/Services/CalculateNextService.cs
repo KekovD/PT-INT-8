@@ -10,21 +10,19 @@ namespace Calculator.Services;
 public class CalculateNextService : ICalculateNextService
 {
     private readonly ILogStrategy _logStrategy;
+    private readonly IFibonacciStateParserAndUpdater _parserAndUpdater;
 
-    public CalculateNextService(ILogStrategy logStrategy)
+    public CalculateNextService(ILogStrategy logStrategy, IFibonacciStateParserAndUpdater parserAndUpdater)
     {
         _logStrategy = logStrategy;
+        _parserAndUpdater = parserAndUpdater;
     }
 
     public async Task<FibonacciState> CalculateNextAsync(FibonacciState state)
     {
         try
         {
-            var previous = BigInteger.Parse(state.Previous);
-            var current = BigInteger.Parse(state.Current);
-            var newCurrent = BigInteger.Add(previous, current);
-
-            return new FibonacciState(state.Current, newCurrent.ToString(), state.StartId, DateTime.Now);
+            return await _parserAndUpdater.ParseAndUpdateStateAsync(state).ConfigureAwait(false);
         }
         catch (FormatException ex)
         {

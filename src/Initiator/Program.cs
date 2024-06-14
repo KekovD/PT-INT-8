@@ -66,11 +66,14 @@ public class Program
                                 logStrategy: provider.GetRequiredService<ILogStrategy>()
                             ));
 
+                        services.AddTransient<IFibonacciStateParserAndUpdater, FibonacciStateParserAndUpdater>();
+
                         services.AddTransient<ICalculateNextService>(provider =>
                             new CalculateNextService(
                                 startPrevious: startPrevious.ToString(),
                                 startCurrent: startCurrent.ToString(),
-                                logStrategy: provider.GetRequiredService<ILogStrategy>()
+                                logStrategy: provider.GetRequiredService<ILogStrategy>(),
+                                parserAndUpdater: provider.GetRequiredService<IFibonacciStateParserAndUpdater>()
                             ));
 
                         services.AddTransient<IHttpClientService>(provider =>
