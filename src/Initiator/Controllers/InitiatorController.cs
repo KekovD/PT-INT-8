@@ -1,3 +1,4 @@
+using System;
 using Initiator.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -18,7 +19,14 @@ public class InitiatorController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> StartCalculationsAsync([FromQuery] int numberOfLaunches)
     {
-        await _fibonacciStartService.StartCalculationsAsync(numberOfLaunches).ConfigureAwait(false);
-        return Ok("Calculations started");
+        try
+        {
+            await _fibonacciStartService.StartCalculationsAsync(numberOfLaunches).ConfigureAwait(false);
+            return Ok("Calculations started");
+        }
+        catch (Exception)
+        {
+            return BadRequest("An error occurred while starting calculations");
+        }
     }
 }
