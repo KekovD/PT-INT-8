@@ -30,8 +30,4 @@
       <ProjectReference Include="..\..\src\Initiator\Initiator.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Initiator\" />
-    </ItemGroup>
-
 </Project>
