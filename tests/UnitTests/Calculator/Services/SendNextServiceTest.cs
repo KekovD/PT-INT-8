@@ -19,7 +19,7 @@ public class SendNextServiceTest
 
         var service = new SendNextService(mockBus.Object, mockLogStrategy.Object, mockCalculateNextService.Object);
 
-        var state = new FibonacciState("1", "2", 1, DateTime.Now);
+        var state = new FibonacciState(Previous: "1", Current: "2", StartId: 1, DateTime.Now);
 
         var errorMessage = "Test exception message";
         mockCalculateNextService.Setup(x => x.CalculateNextAsync(state))
